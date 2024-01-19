@@ -10,7 +10,7 @@ import java.util.Set;
 public class Participant {
    private Player player;
    private Set<Mob> killedMobs = new HashSet<Mob>();
-
+   private boolean isDead = false;
    private Location lastGameLocation;
 
    public Participant(Player player) {
@@ -47,5 +47,13 @@ public class Participant {
 
    public void setLastGameLocation(Location lastGameLocation) {
       this.lastGameLocation = lastGameLocation;
+   }
+
+   public boolean isDead() {
+      return isDead;
+   }
+
+   public void setDead(boolean dead) {
+      isDead = dead;
    }
 }
