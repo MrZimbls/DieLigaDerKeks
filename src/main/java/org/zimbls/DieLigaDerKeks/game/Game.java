@@ -38,6 +38,9 @@ public class Game {
 
       for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
          if (participants.containsKey(onlinePlayer.getName())) {
+            if (participants.get(onlinePlayer.getName()).getLastGameLocation() != null) {
+               spawnLocation = participants.get(onlinePlayer.getName()).getLastGameLocation();
+            }
             onlinePlayer.teleport(spawnLocation);
          }
       }
@@ -95,5 +98,9 @@ public class Game {
 
    public Map<String, Mob> getMobMap() {
       return mobMap;
+   }
+
+   public void setAllLastGameLocations() {
+      players.forEach(Participant::setLastGameLocation);
    }
 }

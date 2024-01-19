@@ -32,6 +32,7 @@ public class GameStateMachine {
 
    public void pauseGame() {
       currentState = GameState.PAUSED;
+      game.setAllLastGameLocations();
       game.teleportAllPlayersToLobbyMap();
    }
 

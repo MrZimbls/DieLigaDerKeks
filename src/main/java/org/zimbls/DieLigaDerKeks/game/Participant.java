@@ -45,8 +45,8 @@ public class Participant {
       return lastGameLocation;
    }
 
-   public void setLastGameLocation(Location lastGameLocation) {
-      this.lastGameLocation = lastGameLocation;
+   public void setLastGameLocation() {
+      lastGameLocation =  player.getLocation();
    }
 
    public boolean isDead() {
