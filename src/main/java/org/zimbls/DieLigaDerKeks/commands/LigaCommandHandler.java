@@ -42,7 +42,7 @@ public class LigaCommandHandler implements CommandExecutor {
                }
                if (state.getState() == GameState.STOPPED) {
                   Player player = (Player) sender;
-                  state.startGame(player.getWorld());
+                  state.startGame(player.getWorld(), plugin);
                   sender.sendMessage("Waiting for everyone to execute </ready>. </liga start> to start the game!");
                   return true;
                } else if (state.getState() == GameState.STARTING) {
