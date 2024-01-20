@@ -7,10 +7,12 @@ public class Mob {
    private String name;
    private int points;
    private ItemStack reward;
+   private ItemStack head;
 
-   public Mob(String name,int points, String reward, int rewardAmount){
+   public Mob(String name,int points, String reward, int rewardAmount, ItemStack head){
       this.name = name;
       this.points = points;
+      this.head = head;
 
       String itemName = reward.substring("minecraft:".length()).toUpperCase();
       Material material = Material.matchMaterial(itemName);
@@ -30,5 +32,9 @@ public class Mob {
 
    public ItemStack getReward() {
       return reward;
+   }
+
+   public ItemStack getHead() {
+      return head;
    }
 }

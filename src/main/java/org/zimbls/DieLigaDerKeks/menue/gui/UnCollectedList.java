@@ -81,18 +81,17 @@ public class UnCollectedList extends PagedMenu {
          if (index >= unkilledMobs.length) break;
 
          //MOB ITEM _____________________
-         ItemStack mapItem = CustomSkulls.MOB_SPAWNER.getSkull();
-         SkullMeta mapItemMeta = (SkullMeta) mapItem.getItemMeta();
+         ItemStack mobItem = unkilledMobs[index].getHead();
+         SkullMeta mobItemMeta = (SkullMeta) mobItem.getItemMeta();
 
-         mapItemMeta.setDisplayName(ChatColor.GOLD + unkilledMobs[index].getName());
+         mobItemMeta.setDisplayName(ChatColor.GOLD + unkilledMobs[index].getName());
 
          ArrayList<String> lore = new ArrayList<>();
-         lore.add(ChatColor.DARK_AQUA + String.valueOf(unkilledMobs[index].getPoints()));
-         lore.add(ChatColor.DARK_GRAY + String.valueOf(index));
-         mapItemMeta.setLore(lore);
+         lore.add(ChatColor.DARK_AQUA + String.valueOf(unkilledMobs[index].getPoints()) + " Points");
+         mobItemMeta.setLore(lore);
 
-         mapItem.setItemMeta(mapItemMeta);
-         inventory.addItem(mapItem);
+         mobItem.setItemMeta(mobItemMeta);
+         inventory.addItem(mobItem);
          index++;
          //MOB ITEM END _________________
       }

@@ -1,5 +1,7 @@
 package org.zimbls.DieLigaDerKeks.util;
 
+import org.bukkit.inventory.ItemStack;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,12 +15,13 @@ public class ImportMobCsv {
          String line;
          while ((line = br.readLine()) != null) {
             String[] parts = line.split(",");
-            if (parts.length == 4) {
+            if (parts.length == 5) {
                String mobName = parts[0].trim();
                int points = Integer.parseInt(parts[1].trim());
                String reward = parts[2].trim();
                int amount = Integer.parseInt(parts[3].trim());
-               mobPoints.put(mobName, new Mob(mobName, points, reward, amount));
+               ItemStack head = SkullBuilder.create(parts[4].trim());
+               mobPoints.put(mobName, new Mob(mobName, points, reward, amount, head));
             }
          }
       } catch (IOException e) {
