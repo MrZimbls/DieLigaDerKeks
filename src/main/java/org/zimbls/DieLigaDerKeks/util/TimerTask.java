@@ -5,15 +5,18 @@ import org.bukkit.GameEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Score;
 import org.zimbls.DieLigaDerKeks.game.GameScoreboard;
+import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 
 public class TimerTask extends BukkitRunnable {
    private int remainingTime = 6 * 60 * 60; // 6 hours in seconds
    private final GameScoreboard gameScoreboard;
    private boolean isPaused = false;
-   private int thirtyMinutesCountdown = 30 * 60; // 30 minutes in seconds
+   private int thirtyMinutesCountdown = 60; // 30 minutes in seconds
+   private GameStateMachine state;
 
-   public TimerTask(GameScoreboard gameScoreboard) {
+   public TimerTask(GameScoreboard gameScoreboard, GameStateMachine state) {
       this.gameScoreboard = gameScoreboard;
+      this.state = state;
    }
 
    @Override
@@ -56,6 +59,6 @@ public class TimerTask extends BukkitRunnable {
    }
 
    private void triggerThirtyMinuteEvent() {
-      // Implement your event logic here
+      state.triggerEvent();
    }
 }

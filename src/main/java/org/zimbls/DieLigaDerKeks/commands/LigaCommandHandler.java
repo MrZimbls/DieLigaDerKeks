@@ -12,6 +12,7 @@ import org.zimbls.DieLigaDerKeks.game.Participant;
 import org.zimbls.DieLigaDerKeks.menue.PagedMenu;
 import org.zimbls.DieLigaDerKeks.menue.PlayerGuiData;
 import org.zimbls.DieLigaDerKeks.menue.gui.UnCollectedList;
+import org.zimbls.DieLigaDerKeks.menue.gui.voteYesOrNo;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameState;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 import org.zimbls.DieLigaDerKeks.util.Countdown;
@@ -28,6 +29,7 @@ public class LigaCommandHandler implements CommandExecutor {
       this.plugin.getCommand("liga").setExecutor(this);
       this.plugin.getCommand("ready").setExecutor(this);
       this.plugin.getCommand("points").setExecutor(this);
+      this.plugin.getCommand("vote").setExecutor(this);
    }
    @Override
    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -113,6 +115,30 @@ public class LigaCommandHandler implements CommandExecutor {
          playerGuiData.setParticipant(state.getGame().getParticipantByName(sender.getName()));
          new UnCollectedList(playerGuiData).open();
          return true;
+      }
+
+      if (label.equalsIgnoreCase("vote")) {
+         if (!(sender instanceof Player)) {
+            sender.sendMessage("Only players can use this command!");
+            return true;
+         }
+         if (state.getState() != GameState.EVENT) {
+            sender.sendMessage("No Event is running!");
+            return true;
+         }
+         Participant participant = state.getGame().getParticipantByName(sender.getName());
+         if (participant == null) {
+            sender.sendMessage("You are not participating in this game!");
+            return true;
+         }
+         if (state.getGame().isEventVotesClosed()) {
+            sender.sendMessage("Event votes are closed");
+            return true;
+         }
+         PlayerGuiData playerGuiData = new PlayerGuiData((Player) sender);
+         playerGuiData.setGame(state.getGame());
+         playerGuiData.setParticipant(state.getGame().getParticipantByName(sender.getName()));
+         new voteYesOrNo(playerGuiData).open();
       }
 
       return false;

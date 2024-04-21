@@ -49,6 +49,10 @@ public class Participant {
       lastGameLocation =  player.getLocation();
    }
 
+   public void setSpesificLocation(Location location) {
+      lastGameLocation = location;
+   }
+
    public boolean isDead() {
       return isDead;
    }

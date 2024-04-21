@@ -4,20 +4,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
+import org.checkerframework.checker.units.qual.A;
+import org.zimbls.DieLigaDerKeks.game.events.Event;
+import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 import org.zimbls.DieLigaDerKeks.util.ImportMobCsv;
 import org.zimbls.DieLigaDerKeks.util.Mob;
 import org.zimbls.DieLigaDerKeks.util.TimerTask;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Game {
 
@@ -31,13 +31,16 @@ public class Game {
    private Objective objective;
    private GameMap gameMap;
    private World lobbyMap;
+   private Map<Player, Boolean> eventVotes = new HashMap<>();
+   private Event activEvent;
+   private boolean eventVotesClosed = false;
 
-   public Game(World lobbyMap, JavaPlugin plugin) {
+   public Game(World lobbyMap, JavaPlugin plugin, GameStateMachine state) {
       this.lobbyMap = lobbyMap;
       setupScoreboard();
       mobMap = ImportMobCsv.loadMobPoints("plugins/rewardTable.csv");
       gameScoreboard = new GameScoreboard();
-      timerTask = new TimerTask(gameScoreboard);
+      timerTask = new TimerTask(gameScoreboard, state);
       timerTask.setPaused(true);
       timerTask.runTaskTimer(plugin, 0L, 20L);
    }
@@ -91,6 +94,14 @@ public class Game {
       });
    }
 
+   public void setEventScoreboard(EventScoreboard eventScoreboard) {
+      Bukkit.getOnlinePlayers().forEach(player -> {
+         if (participants.containsKey(player.getName())) {
+            player.setScoreboard(eventScoreboard.getScoreboard());
+         }
+      });
+   }
+
    public void addPlayerToGame(Player player){
       players.forEach(participant -> {
          if (participant.getPlayer() == player) {
@@ -131,7 +142,57 @@ public class Game {
       timerTask.setPaused(true);
    }
 
-   public void continueTimer(){
+   public void continueTimer() {
       timerTask.setPaused(false);
+   }
+
+   public void setEventVote(Player player, boolean vote) {
+      eventVotes.put(player, vote);
+   }
+
+   public int getNumberOfPlayersAlive() {
+      AtomicInteger count = new AtomicInteger(0);
+      players.forEach(participant -> {
+         if (!participant.isDead()) {
+            count.getAndIncrement();
+         }
+      });
+      return count.get();
+   }
+
+   public int getYesVotes() {
+      AtomicInteger counter = new AtomicInteger(0);
+      eventVotes.values().forEach(vote -> {
+         if (vote) {
+            counter.getAndIncrement();
+         }
+      });
+      return counter.get();
+   }
+
+   public int getNoVotes() {
+      AtomicInteger counter = new AtomicInteger(0);
+      eventVotes.values().forEach(vote -> {
+         if (!vote) {
+            counter.getAndIncrement();
+         }
+      });
+      return counter.get();
+   }
+
+   public Event getActivEvent() {
+      return activEvent;
+   }
+
+   public void setActivEvent(Event activEvent) {
+      this.activEvent = activEvent;
+   }
+
+   public boolean isEventVotesClosed() {
+      return eventVotesClosed;
+   }
+
+   public void setEventVotesClosed(boolean eventVotesClosed) {
+      this.eventVotesClosed = eventVotesClosed;
    }
 }

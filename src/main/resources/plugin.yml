@@ -13,3 +13,6 @@ commands:
   points:
     description: Displays the points when you are in a game
     usage: /points
+  vote:
+    description: Vote for current event
+    usage: /vote

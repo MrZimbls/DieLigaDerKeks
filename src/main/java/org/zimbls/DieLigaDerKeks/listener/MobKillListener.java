@@ -31,6 +31,7 @@ public class MobKillListener implements Listener {
                   if (participant.addIfNewMob(mob)) {
                      String message = "+" + mob.getPoints() + " for " + mobName;
                      player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
+                     
                   }
                }
             }
