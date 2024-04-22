@@ -9,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.zimbls.DieLigaDerKeks.menue.PagedMenu;
 import org.zimbls.DieLigaDerKeks.menue.PlayerGuiData;
-import org.zimbls.DieLigaDerKeks.util.CustomSkulls;
 import org.zimbls.DieLigaDerKeks.util.Mob;
 
 import java.util.ArrayList;

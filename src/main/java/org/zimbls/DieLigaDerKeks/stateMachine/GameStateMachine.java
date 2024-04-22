@@ -1,93 +1,113 @@
 package org.zimbls.DieLigaDerKeks.stateMachine;
 
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.zimbls.DieLigaDerKeks.game.EventScoreboard;
 import org.zimbls.DieLigaDerKeks.game.Game;
-import org.zimbls.DieLigaDerKeks.game.GameScoreboard;
 import org.zimbls.DieLigaDerKeks.game.events.Event;
-import org.zimbls.DieLigaDerKeks.game.events.RandomPlayerTp;
+import org.zimbls.DieLigaDerKeks.game.events.RandomPlayerTpEvent;
+import org.zimbls.DieLigaDerKeks.game.events.SwapPointsEvent;
 import org.zimbls.DieLigaDerKeks.util.EventTimer;
-import org.zimbls.DieLigaDerKeks.util.TimerTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class GameStateMachine {
-   private GameState currentState;
-   private Game game;
-   private ArrayList<Event> availableEvents = new ArrayList<Event>();
-   private JavaPlugin plugin;
+    private GameState currentState;
+    private Game game;
+    private ArrayList<Event> availableEvents = new ArrayList<Event>();
+    private JavaPlugin plugin;
 
-   public GameStateMachine() {
-      currentState = GameState.STOPPED; // Initial state
-   }
+    public GameStateMachine() {
+        currentState = GameState.STOPPED; // Initial state
+    }
 
-   public Game getGame() {
-      return game;
-   }
+    public Game getGame() {
+        return game;
+    }
 
-   public GameState getState() {
-      return currentState;
-   }
+    public GameState getState() {
+        return currentState;
+    }
 
-   public void startGame(World lobbyMap, JavaPlugin plugin) {
-      currentState = GameState.STARTING;
-      game = new Game(lobbyMap, plugin, this);
-      game.createGameWorld();
-      availableEvents.add(new RandomPlayerTp(this));
-      this.plugin = plugin;
-   }
+    public void startGame(World lobbyMap, JavaPlugin plugin) {
+        currentState = GameState.STARTING;
+        game = new Game(lobbyMap, plugin, this);
+        game.createGameWorld();
+        availableEvents.add(new RandomPlayerTpEvent(this));
+        availableEvents.add(new SwapPointsEvent(this));
+        this.plugin = plugin;
 
-   public void runGame() {
-      currentState = GameState.RUNNING;
-      game.clearScoreboards();
-      game.teleportAllPlayersToGameMap();
-      game.continueTimer();
-      game.setGameScoreboard();
-   }
+        // Triggered when the game is first started
+        plugin.getServer().getOnlinePlayers().forEach(player -> {
+            player.sendTitle(ChatColor.GREEN + "Game started!", "Waiting for everyone to enter /ready in the cat!", 10, 70, 20);
+            player.sendMessage("Please enter " + ChatColor.GREEN + "/ready" + ChatColor.RESET + " to join the game!");
+        });
+    }
 
-   public void pauseGame() {
-      currentState = GameState.PAUSED;
-      game.setAllLastGameLocations();
-      game.clearScoreboards();
-      game.teleportAllPlayersToLobbyMap();
-      game.pauseTimer();
-   }
+    public void runGame(GameState previousState) {
+        currentState = GameState.RUNNING;
+        game.clearScoreboards();
+        game.teleportAllPlayersToGameMap();
+        game.continueTimer();
+        game.setGameScoreboard();
 
-   public void triggerEvent() {
-      currentState = GameState.EVENT;
-      game.setAllLastGameLocations();
-      game.clearScoreboards();
-      game.teleportAllPlayersToLobbyMap();
-      game.pauseTimer();
-      game.setEventVotesClosed(false);
+        // Triggered when the game continues after a pause
+        if (previousState != GameState.STARTING) {
+            game.getParticipants().forEach(participant -> {
+                participant.getPlayer().sendTitle(ChatColor.GREEN + "Game continuing!", "The next event starts in 30 minutes!", 10, 70, 20);
+            });
+        }
+    }
 
-      ArrayList<Event> possibleEvents = new ArrayList<Event>();
-      for (Event event:availableEvents) {
-         if (event.isPossibleForPlayerCount(game.getNumberOfPlayersAlive())) {
-            possibleEvents.add(event);
-         }
-         possibleEvents.add(event); //TODO remove only for testing
-      }
+    public void pauseGame() {
+        currentState = GameState.PAUSED;
+        game.setAllLastGameLocations();
+        game.clearScoreboards();
+        game.teleportAllPlayersToLobbyMap();
+        game.pauseTimer();
+    }
 
-      Collections.shuffle(possibleEvents);
-      game.setActivEvent(possibleEvents.get(0));
+    public void triggerEvent() {
+        currentState = GameState.EVENT;
+        game.setAllLastGameLocations();
+        game.clearScoreboards();
+        game.teleportAllPlayersToLobbyMap();
+        game.pauseTimer();
+        game.setEventVotesClosed(false);
 
-      EventScoreboard eventScoreboard = new EventScoreboard();
-      game.setEventScoreboard(eventScoreboard);
-      EventTimer eventTask = new EventTimer(eventScoreboard, this);
-      eventTask.runTaskTimer(plugin, 0L, 20L);
-   }
+        // Triggered when the event is event voting starts
+        game.getParticipants().forEach(participant -> {
+            participant.getPlayer().sendTitle(ChatColor.GREEN + "Vote for the next event!", "To vote, please enter /vote in the chat!", 10, 70, 20);
+            participant.getPlayer().sendMessage("Please enter " + ChatColor.GREEN + "/vote" + ChatColor.RESET + " to vote for the the event!");
+        });
 
-   public void endEvent(boolean runEvent) {
-      if (runEvent) {
-         game.getActivEvent().runEvent();
-      }
-      runGame();
-   }
+        ArrayList<Event> possibleEvents = new ArrayList<Event>();
+        for (Event event : availableEvents) {
+            if (event.isPossibleForPlayerCount(game.getNumberOfPlayersAlive())) {
+                possibleEvents.add(event);
+            }
+            possibleEvents.add(event); //TODO remove, this is only for testing
+        }
 
-   public void stopGame() {
-      currentState = GameState.STOPPED;
-   }
+        Collections.shuffle(possibleEvents);
+        game.setActivEvent(possibleEvents.get(0));
+
+        EventScoreboard eventScoreboard = new EventScoreboard();
+        game.setEventScoreboard(eventScoreboard);
+        EventTimer eventTask = new EventTimer(eventScoreboard, this, plugin);
+        eventTask.runTaskTimer(plugin, 0L, 20L);
+    }
+
+    public void endEvent(boolean runEvent) {
+        if (runEvent) {
+            game.getActivEvent().runEvent();
+        }
+        runGame(GameState.EVENT);
+    }
+
+    public void stopGame() {
+        currentState = GameState.STOPPED;
+    }
 }

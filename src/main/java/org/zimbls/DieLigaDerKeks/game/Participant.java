@@ -51,7 +51,7 @@ public class Participant {
       lastGameLocation =  player.getLocation();
    }
 
-   public void setSpesificLocation(Location location) {
+   public void setSpecificLocation(Location location) {
       lastGameLocation = location;
    }
 

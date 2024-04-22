@@ -11,7 +11,7 @@ public class TimerTask extends BukkitRunnable {
    private int remainingTime = 6 * 60 * 60; // 6 hours in seconds
    private final GameScoreboard gameScoreboard;
    private boolean isPaused = false;
-   private int thirtyMinutesCountdown = 60; // 30 minutes in seconds
+   private int thirtyMinutesCountdown = 20; // 30 minutes in seconds (should be 30 * 60)y
    private GameStateMachine state;
 
    public TimerTask(GameScoreboard gameScoreboard, GameStateMachine state) {
