@@ -12,6 +12,7 @@ public class Participant {
    private Set<Mob> killedMobs = new HashSet<Mob>();
    private boolean isDead = false;
    private Location lastGameLocation;
+   private int points = 0;
 
    public Participant(Player player) {
       this.player = player;
@@ -22,6 +23,7 @@ public class Participant {
          return false;
       }
       killedMobs.add(mob);
+      points = points + mob.getPoints();
       return true;
    }
 
@@ -30,11 +32,11 @@ public class Participant {
    }
 
    public int getPoints() {
-      int points = 0;
-      for (Mob mob:killedMobs) {
-         points = points + mob.getPoints();
-      }
       return points;
+   }
+
+   public void setPoints(int p) {
+      points = p;
    }
 
    public Set<Mob> getKilledMobs() {
