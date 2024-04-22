@@ -19,7 +19,7 @@ public class RandomPlayerTp extends Event{
    @Override
    public void runEvent() {
       Set<Participant> participants = super.state.getGame().getParticipants();
-      ArrayList locations = new ArrayList<Location>();
+      ArrayList<Location> locations = new ArrayList<Location>();
       participants.forEach(participant -> {
          if (!participant.isDead()) {
             locations.add(participant.getLastGameLocation());

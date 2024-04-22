@@ -65,7 +65,7 @@ public class GameStateMachine {
 
       ArrayList<Event> possibleEvents = new ArrayList<Event>();
       for (Event event:availableEvents) {
-         if (event.isPossibleForPlayercount(game.getNumberOfPlayersAlive())) {
+         if (event.isPossibleForPlayerCount(game.getNumberOfPlayersAlive())) {
             possibleEvents.add(event);
          }
          possibleEvents.add(event); //TODO remove only for testing

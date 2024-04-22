@@ -13,11 +13,8 @@ public abstract class Event {
       this.state = state;
    }
 
-   public boolean isPossibleForPlayercount(int p) {
-      if (p >= minPlayers && p <= maxPlayers) {
-         return true;
-      }
-      return false;
+   public boolean isPossibleForPlayerCount(int p) {
+      return p >= minPlayers && p <= maxPlayers;
    }
 
    public abstract void runEvent();

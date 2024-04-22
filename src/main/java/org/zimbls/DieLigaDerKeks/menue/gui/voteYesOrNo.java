@@ -56,7 +56,7 @@ public class voteYesOrNo extends Menu {
       lore.add(ChatColor.GRAY + playerGuiData.getGame().getActivEvent().getDescription());
       infoMeta.setLore(lore);
       info.setItemMeta(infoMeta);
-      inventory.setItem(12, info);
+      inventory.setItem(4, info);
 
       ItemStack yes = CustomSkulls.GREEN_CHECK.getSkull();
       ItemMeta yesMeta = yes.getItemMeta();
