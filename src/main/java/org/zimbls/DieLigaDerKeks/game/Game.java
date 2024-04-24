@@ -127,6 +127,12 @@ public class Game {
         return players;
     }
 
+    public Set<Player> getParticipatingPlayers() {
+        Set<Player> participatingPlayers = new HashSet<>();
+        players.forEach(participant -> participatingPlayers.add(participant.getPlayer()));
+        return participatingPlayers;
+    }
+
     public void createGameWorld() {
         this.gameMap = new GameMap();
     }

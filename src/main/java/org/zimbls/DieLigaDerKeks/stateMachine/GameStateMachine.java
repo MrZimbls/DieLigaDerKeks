@@ -54,7 +54,7 @@ public class GameStateMachine {
         });
 
         // Send a reminder message to all online players who haven't entered /ready yet
-        this.reminderTask = new ReminderTask(plugin, game.getParticipants(), "Please enter " + ChatColor.GREEN + "/ready" + ChatColor.RESET + " to join the game if you haven't already and would like to participate!")
+        this.reminderTask = new ReminderTask(plugin, game, "Please enter " + ChatColor.GREEN + "/ready" + ChatColor.RESET + " to join the game if you haven't already and would like to participate!")
             .runTaskTimer(plugin, 15 * 20L, 20L * 30);
     }
 
