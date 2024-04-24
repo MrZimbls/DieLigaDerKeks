@@ -16,3 +16,6 @@ commands:
   vote:
     description: Vote for current event
     usage: /vote
+  language:
+    description: Change the language
+    usage: /language en/de

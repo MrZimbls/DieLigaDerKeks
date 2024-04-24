@@ -9,6 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.zimbls.DieLigaDerKeks.menue.Menu;
 import org.zimbls.DieLigaDerKeks.menue.PlayerGuiData;
 import org.zimbls.DieLigaDerKeks.util.CustomSkulls;
+import org.zimbls.DieLigaDerKeks.util.LanguagePreferencesBasedProperties;
 
 import java.util.ArrayList;
 
@@ -56,7 +57,14 @@ public class voteYesOrNo extends Menu {
         ItemMeta infoMeta = info.getItemMeta();
         infoMeta.setDisplayName(ChatColor.YELLOW + "Info:");
         ArrayList<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + playerGuiData.getGame().getActivEvent().getDescription());
+        String propertyName = "event.description." + playerGuiData.getGame().getActivEvent().getTitle();
+        String description;
+        try {
+            description = LanguagePreferencesBasedProperties.getProperty(playerGuiData.getGuiHolder().getUniqueId(), propertyName);
+        } catch (Exception e) {
+            description = "Could not find description for event.";
+        }
+        lore.add(ChatColor.GRAY + description);
         infoMeta.setLore(lore);
         info.setItemMeta(infoMeta);
         inventory.setItem(4, info);

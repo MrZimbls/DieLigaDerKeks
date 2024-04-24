@@ -42,11 +42,6 @@ public class SwapPointsEvent extends Event {
     }
 
     @Override
-    public String getDescription() {
-        return "When both players agree, their points will be swapped!";
-    }
-
-    @Override
     public String getTitle() {
         return "PointSwap";
     }

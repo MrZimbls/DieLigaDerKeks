@@ -18,6 +18,6 @@ public abstract class Event {
    }
 
    public abstract void runEvent();
-   public abstract String getDescription();
+
    public abstract String getTitle();
 }

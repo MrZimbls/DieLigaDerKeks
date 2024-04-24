@@ -39,11 +39,6 @@ public class RandomPlayerTpEvent extends Event {
     }
 
     @Override
-    public String getDescription() {
-        return "When all players agree, their locations will be randomly swapped!";
-    }
-
-    @Override
     public String getTitle() {
         return "PlayerSwap";
     }

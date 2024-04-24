@@ -1,7 +1,5 @@
 package org.zimbls.DieLigaDerKeks.commands;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -10,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.zimbls.DieLigaDerKeks.game.Participant;
-import org.zimbls.DieLigaDerKeks.menue.PagedMenu;
 import org.zimbls.DieLigaDerKeks.menue.PlayerGuiData;
 import org.zimbls.DieLigaDerKeks.menue.gui.UnCollectedList;
 import org.zimbls.DieLigaDerKeks.menue.gui.voteYesOrNo;
@@ -18,6 +15,7 @@ import org.zimbls.DieLigaDerKeks.stateMachine.GameState;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 import org.zimbls.DieLigaDerKeks.util.Countdown;
 import org.zimbls.DieLigaDerKeks.util.CountdownAction;
+import org.zimbls.DieLigaDerKeks.util.LanguagePreferencesBasedProperties;
 
 
 public class LigaCommandHandler implements CommandExecutor {
@@ -31,6 +29,7 @@ public class LigaCommandHandler implements CommandExecutor {
         this.plugin.getCommand("ready").setExecutor(this);
         this.plugin.getCommand("points").setExecutor(this);
         this.plugin.getCommand("vote").setExecutor(this);
+        this.plugin.getCommand("language").setExecutor(this);
     }
 
     @Override
@@ -143,6 +142,26 @@ public class LigaCommandHandler implements CommandExecutor {
             playerGuiData.setGame(state.getGame());
             playerGuiData.setParticipant(state.getGame().getParticipantByName(sender.getName()));
             new voteYesOrNo(playerGuiData).open();
+        }
+
+        if (label.equalsIgnoreCase("language")) {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("Only players can use this command!");
+                return true;
+            }
+            if (args.length == 0) {
+                sender.sendMessage(ChatColor.RED + "Please specify a language! (en, de)");
+                return true;
+            }
+            try {
+                System.out.println(sender.getName() + " set language to " + args[0]);
+                LanguagePreferencesBasedProperties.setLanguagePreference(((Player) sender).getUniqueId(), args[0]);
+                sender.sendMessage(ChatColor.GREEN + "Language set to " + args[0]);
+                return true;
+            } catch (Exception e) {
+                sender.sendMessage(ChatColor.RED + e.getMessage());
+                return true;
+            }
         }
 
         return false;
