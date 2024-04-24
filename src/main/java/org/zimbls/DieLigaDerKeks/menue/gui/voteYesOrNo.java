@@ -59,6 +59,7 @@ public class voteYesOrNo extends Menu {
         ArrayList<String> lore = new ArrayList<>();
         String propertyName = "event.description." + playerGuiData.getGame().getActivEvent().getTitle();
         String description;
+
         try {
             description = LanguagePreferencesBasedProperties.getProperty(playerGuiData.getGuiHolder().getUniqueId(), propertyName);
         } catch (Exception e) {

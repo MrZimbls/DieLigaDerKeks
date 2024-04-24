@@ -19,10 +19,7 @@ public class SwapPointsEvent extends Event {
 
         // Get all online participants
         Set<Participant> participants = super.state.getGame().getParticipants();
-        System.out.println("Participants set: " + participants.size());
         Iterator<Participant> iterator = participants.iterator();
-
-        System.out.println("Participants iterator: " + participants.size());
 
         // Get the two players
         Participant player1 = iterator.next();

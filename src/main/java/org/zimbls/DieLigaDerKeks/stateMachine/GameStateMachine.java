@@ -1,23 +1,30 @@
 package org.zimbls.DieLigaDerKeks.stateMachine;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.zimbls.DieLigaDerKeks.game.EventScoreboard;
 import org.zimbls.DieLigaDerKeks.game.Game;
+import org.zimbls.DieLigaDerKeks.game.Participant;
 import org.zimbls.DieLigaDerKeks.game.events.Event;
 import org.zimbls.DieLigaDerKeks.game.events.RandomPlayerTpEvent;
+import org.zimbls.DieLigaDerKeks.game.events.RevealPointsEvent;
 import org.zimbls.DieLigaDerKeks.game.events.SwapPointsEvent;
 import org.zimbls.DieLigaDerKeks.util.EventTimer;
+import org.zimbls.DieLigaDerKeks.util.ReminderTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
 
 public class GameStateMachine {
     private GameState currentState;
     private Game game;
-    private ArrayList<Event> availableEvents = new ArrayList<Event>();
+    private final ArrayList<Event> availableEvents = new ArrayList<Event>();
     private JavaPlugin plugin;
+    BukkitTask reminderTask;
 
     public GameStateMachine() {
         currentState = GameState.STOPPED; // Initial state
@@ -37,6 +44,7 @@ public class GameStateMachine {
         game.createGameWorld();
         availableEvents.add(new RandomPlayerTpEvent(this));
         availableEvents.add(new SwapPointsEvent(this));
+        availableEvents.add(new RevealPointsEvent(this));
         this.plugin = plugin;
 
         // Triggered when the game is first started
@@ -44,6 +52,10 @@ public class GameStateMachine {
             player.sendTitle(ChatColor.GREEN + "Game started!", "Waiting for everyone to enter /ready in the cat!", 10, 70, 20);
             player.sendMessage("Please enter " + ChatColor.GREEN + "/ready" + ChatColor.RESET + " to join the game!");
         });
+
+        // Send a reminder message to all online players who haven't entered /ready yet
+        this.reminderTask = new ReminderTask(plugin, game.getParticipants(), "Please enter " + ChatColor.GREEN + "/ready" + ChatColor.RESET + " to join the game if you haven't already and would like to participate!")
+            .runTaskTimer(plugin, 15 * 20L, 20L * 30);
     }
 
     public void runGame(GameState previousState) {
@@ -52,6 +64,7 @@ public class GameStateMachine {
         game.teleportAllPlayersToGameMap();
         game.continueTimer();
         game.setGameScoreboard();
+        this.reminderTask.cancel();
 
         // Triggered when the game continues after a pause
         if (previousState != GameState.STARTING) {
