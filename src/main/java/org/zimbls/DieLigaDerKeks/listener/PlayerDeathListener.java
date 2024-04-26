@@ -1,5 +1,7 @@
 package org.zimbls.DieLigaDerKeks.listener;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,6 +32,8 @@ public class PlayerDeathListener implements Listener {
                Mob mob = state.getGame().getMobFormMobName("Player");
                killer.addIfNewMob(mob);
                player.getWorld().dropItemNaturally(player.getLocation(), mob.getReward());
+               String message = "+" + mob.getPoints() + " for " + mob.getName();
+               killer.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
             }
          }
       }
