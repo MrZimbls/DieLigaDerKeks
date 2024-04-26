@@ -1,19 +1,19 @@
 package org.zimbls.DieLigaDerKeks.game;
 
-import org.bukkit.*;
-import org.bukkit.entity.Player;
-import org.zimbls.DieLigaDerKeks.game.Participant;
-import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
+import org.bukkit.World;
+import org.bukkit.WorldBorder;
+import org.bukkit.WorldCreator;
 
 public class GameMap {
 
    private World gameWorld;
+   private int worldBorderSize = 6000;
 
    public GameMap(){
       String worldName = "GameWorld"; // Choose a unique name for your world
       WorldCreator worldCreator = new WorldCreator(worldName);
       this.gameWorld = worldCreator.createWorld();
-      setWorldBorder(6000);
+      setWorldBorder(worldBorderSize);
    }
 
    public World getGameWorld() {
@@ -30,5 +30,11 @@ public class GameMap {
       border.setWarningDistance(10); // Distance a player will be warned when near the border
       border.setWarningTime(15); // Time in seconds a player will be warned when near the border
 
+   }
+
+   public void halfWorldBorder(int delay){
+      WorldBorder border = gameWorld.getWorldBorder();
+      worldBorderSize = worldBorderSize / 2;
+      border.setSize(worldBorderSize, delay);
    }
 }

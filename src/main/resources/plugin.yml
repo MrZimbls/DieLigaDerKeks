@@ -18,4 +18,4 @@ commands:
     usage: /vote
   language:
     description: Change the language
-    usage: /language en/de
+    usage: /language [en|de]

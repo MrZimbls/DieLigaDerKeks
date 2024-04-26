@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.zimbls.DieLigaDerKeks.game.Participant;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameState;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;

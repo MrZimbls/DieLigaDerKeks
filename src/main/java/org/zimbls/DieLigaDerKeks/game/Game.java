@@ -9,7 +9,6 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
-import org.checkerframework.checker.units.qual.A;
 import org.zimbls.DieLigaDerKeks.game.events.Event;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 import org.zimbls.DieLigaDerKeks.util.ImportMobCsv;
@@ -135,6 +134,10 @@ public class Game {
 
     public void createGameWorld() {
         this.gameMap = new GameMap();
+    }
+
+    public GameMap getGameWorld() {
+        return this.gameMap;
     }
 
     public Map<String, Mob> getMobMap() {

@@ -1,28 +1,22 @@
 package org.zimbls.DieLigaDerKeks.stateMachine;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.zimbls.DieLigaDerKeks.game.EventScoreboard;
 import org.zimbls.DieLigaDerKeks.game.Game;
-import org.zimbls.DieLigaDerKeks.game.Participant;
-import org.zimbls.DieLigaDerKeks.game.events.Event;
-import org.zimbls.DieLigaDerKeks.game.events.RandomPlayerTpEvent;
-import org.zimbls.DieLigaDerKeks.game.events.RevealPointsEvent;
-import org.zimbls.DieLigaDerKeks.game.events.SwapPointsEvent;
+import org.zimbls.DieLigaDerKeks.game.events.*;
 import org.zimbls.DieLigaDerKeks.util.EventTimer;
 import org.zimbls.DieLigaDerKeks.util.ReminderTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Set;
 
 public class GameStateMachine {
     private GameState currentState;
     private Game game;
-    private final ArrayList<Event> availableEvents = new ArrayList<Event>();
+    private final ArrayList<Event> availableEvents = new ArrayList<>();
     private JavaPlugin plugin;
     BukkitTask reminderTask;
 
@@ -45,6 +39,7 @@ public class GameStateMachine {
         availableEvents.add(new RandomPlayerTpEvent(this));
         availableEvents.add(new SwapPointsEvent(this));
         availableEvents.add(new RevealPointsEvent(this));
+        availableEvents.add(new HalfWorldBorderEvent(this));
         this.plugin = plugin;
 
         // Triggered when the game is first started
