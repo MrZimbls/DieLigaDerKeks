@@ -22,8 +22,11 @@ public class PlayerDeathListener implements Listener {
    @EventHandler
    public void onPlayerDeath(PlayerDeathEvent event) {
       Player player = event.getEntity();
+      if (state.getState() != GameState.RUNNING) {
+         return;
+      }
       Participant participant = state.getGame().getParticipantByName(player.getName());
-      if (state.getState() == GameState.RUNNING && participant != null) { // Check if the game is running
+      if (participant != null) { // Check if the game is running
          player.setGameMode(GameMode.SPECTATOR); // Set the player's game mode to Spectator
          participant.setDead(true);
          if (player.getKiller() != null) {
