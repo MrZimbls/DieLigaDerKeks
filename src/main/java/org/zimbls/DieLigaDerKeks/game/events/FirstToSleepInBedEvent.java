@@ -6,9 +6,9 @@ import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 
 import java.util.Set;
 
-public class SleepInBedEvent extends Event {
+public class FirstToSleepInBedEvent extends Event {
 
-    public SleepInBedEvent(GameStateMachine state) {
+    public FirstToSleepInBedEvent(GameStateMachine state) {
         super(state);
         super.minPlayers = 2;
         super.maxPlayers = 2;
@@ -16,7 +16,7 @@ public class SleepInBedEvent extends Event {
 
     @Override
     public void runEvent() {
-        System.out.println("Running SleepInBed Challenge!");
+        System.out.println("Running FirstToSleepInBed Challenge!");
 
         // Get all online participants
         Set<Participant> participants = super.state.getGame().getParticipants();
@@ -32,6 +32,6 @@ public class SleepInBedEvent extends Event {
 
     @Override
     public String getTitle() {
-        return "SleepInBedChallenge";
+        return "FirstToSleepInBedChallenge";
     }
 }

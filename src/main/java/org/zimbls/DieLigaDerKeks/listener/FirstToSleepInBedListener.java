@@ -13,20 +13,17 @@ import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 
 import java.util.Set;
 
-public class SleepInBedListener implements Listener {
-    private GameStateMachine state;
+public class FirstToSleepInBedListener implements Listener {
+    private final GameStateMachine state;
     private boolean listenerActive = true;
 
-    public SleepInBedListener(GameStateMachine state) {
+    public FirstToSleepInBedListener(GameStateMachine state) {
         this.state = state;
     }
 
     @EventHandler
     public void onPlayerEnterBed(PlayerBedEnterEvent event) {
         System.out.println("PlayerBedEnterEvent triggered!");
-
-        System.out.println("GameState: " + state.getState());
-        System.out.println("ListenerActive: " + listenerActive);
 
         // Check if the game is running and the challenge is active
         if (state.getState() != GameState.RUNNING) return;
@@ -35,7 +32,6 @@ public class SleepInBedListener implements Listener {
         if (!listenerActive) return;
 
         Event activeEvent = state.getGame().getActivEvent();
-        System.out.println("ActiveEvent: " + activeEvent);
 
         // Check if the active event is the SleepInBedChallenge
         if (activeEvent == null || !activeEvent.getTitle().equals("SleepInBedChallenge")) return;

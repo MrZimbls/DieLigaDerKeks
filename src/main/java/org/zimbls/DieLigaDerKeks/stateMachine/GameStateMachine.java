@@ -43,7 +43,7 @@ public class GameStateMachine {
         availableEvents.add(new RevealLocationEvent(this));
         availableEvents.add(new BuffLastTwoPlayersEvent(this));
         availableEvents.add(new NerfTopTwoPlayersEvent(this));
-        availableEvents.add(new SleepInBedEvent(this));
+        availableEvents.add(new FirstToSleepInBedEvent(this));
         this.plugin = plugin;
 
         // Triggered when the game is first started
