@@ -15,7 +15,6 @@ public class ReminderTask extends BukkitRunnable {
     public ReminderTask(JavaPlugin plugin, Game game, String message) {
         this.plugin = plugin;
         this.message = message;
-        // Participants set when task is created
         this.game = game;
     }
 

@@ -40,6 +40,7 @@ public class GameStateMachine {
         availableEvents.add(new SwapPointsEvent(this));
         availableEvents.add(new RevealPointsEvent(this));
         availableEvents.add(new HalfWorldBorderEvent(this));
+        availableEvents.add(new RevealLocationEvent(this));
         this.plugin = plugin;
 
         // Triggered when the game is first started
