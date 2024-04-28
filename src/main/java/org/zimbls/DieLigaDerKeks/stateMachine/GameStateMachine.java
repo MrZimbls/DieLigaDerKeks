@@ -41,8 +41,10 @@ public class GameStateMachine {
 //        availableEvents.add(new RevealPointsEvent(this));
 //        availableEvents.add(new HalfWorldBorderEvent(this));
 //        availableEvents.add(new RevealLocationEvent(this));
-        availableEvents.add(new BuffLastTwoPlayersEvent(this));
-        availableEvents.add(new NerfTopTwoPlayersEvent(this));
+          availableEvents.add(new RevealStrongholdEvent(this));
+
+//        availableEvents.add(new BuffLastTwoPlayersEvent(this));
+//        availableEvents.add(new NerfTopTwoPlayersEvent(this));
         this.plugin = plugin;
 
         // Triggered when the game is first started

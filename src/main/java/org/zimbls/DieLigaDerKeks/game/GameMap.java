@@ -1,8 +1,11 @@
 package org.zimbls.DieLigaDerKeks.game;
 
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
+import org.bukkit.generator.structure.Structure;
+import org.bukkit.generator.structure.StructureType;
 
 public class GameMap {
 
@@ -36,5 +39,10 @@ public class GameMap {
       WorldBorder border = gameWorld.getWorldBorder();
       worldBorderSize = worldBorderSize / 2;
       border.setSize(worldBorderSize, delay);
+   }
+
+   public Location getNearestStronghold(Location location){
+      Location stronghold = gameWorld.locateNearestStructure(location, StructureType.STRONGHOLD, 1000, false).getLocation();
+      return stronghold;
    }
 }
