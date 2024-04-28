@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.zimbls.DieLigaDerKeks.game.Participant;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameState;
@@ -35,7 +36,7 @@ public class RevealLocationEvent extends Event {
             participant.getPlayer().sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Revealing all player locations! You are also glowing for 5 minutes!");
 
             // Give the player a glowing effect for 5 minutes
-            participant.getPlayer().addPotionEffect(new org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.GLOWING, 20 * 60 * 5, 1));
+            participant.getPlayer().addPotionEffect(new org.bukkit.potion.PotionEffect(PotionEffectType.GLOWING, 20 * 60 * 5, 1));
 
             // Send the location of all participants to the player
             participants.stream().filter(p -> !p.equals(participant)).forEach(p -> {
