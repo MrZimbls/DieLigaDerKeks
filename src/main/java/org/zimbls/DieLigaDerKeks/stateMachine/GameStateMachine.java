@@ -36,11 +36,13 @@ public class GameStateMachine {
         currentState = GameState.STARTING;
         game = new Game(lobbyMap, plugin, this);
         game.createGameWorld();
-        availableEvents.add(new RandomPlayerTpEvent(this));
-        availableEvents.add(new SwapPointsEvent(this));
-        availableEvents.add(new RevealPointsEvent(this));
-        availableEvents.add(new HalfWorldBorderEvent(this));
-        availableEvents.add(new RevealLocationEvent(this));
+//        availableEvents.add(new RandomPlayerTpEvent(this));
+//        availableEvents.add(new SwapPointsEvent(this));
+//        availableEvents.add(new RevealPointsEvent(this));
+//        availableEvents.add(new HalfWorldBorderEvent(this));
+//        availableEvents.add(new RevealLocationEvent(this));
+        availableEvents.add(new BuffLastTwoPlayersEvent(this));
+        availableEvents.add(new NerfTopTwoPlayersEvent(this));
         this.plugin = plugin;
 
         // Triggered when the game is first started
@@ -90,6 +92,7 @@ public class GameStateMachine {
         game.getParticipants().forEach(participant -> {
             participant.getPlayer().sendTitle(ChatColor.GREEN + "Vote for the next event!", "To vote, please enter /vote in the chat!", 10, 70, 20);
             participant.getPlayer().sendMessage("Please enter " + ChatColor.GREEN + "/vote" + ChatColor.RESET + " to vote for the the event!");
+            participant.getPlayer().sendMessage("When the majority of players voted YES for it, the event will happen!");
         });
 
         ArrayList<Event> possibleEvents = new ArrayList<Event>();
