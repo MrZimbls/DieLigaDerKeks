@@ -18,7 +18,11 @@ public class RevealStrongholdEvent extends Event
     public void runEvent() {
         super.state.getGame().getParticipants().forEach(participant -> {
            Location stronghold = super.state.getGame().getGameWorld().getNearestStronghold(participant.getLastGameLocation());
-           participant.getPlayer().sendMessage(ChatColor.GREEN + LanguagePreferencesBasedProperties.getProperty(participant.getPlayer().getUniqueId(), "event.message.StrongholdLocationMessage") + " X: "+stronghold.getX() + " Y: "+stronghold.getY() + " Z: " + stronghold.getZ());
+           participant.getPlayer().sendMessage(ChatColor.GREEN + "*********************************************************************\n"
+                   + " \n"
+                   + LanguagePreferencesBasedProperties.getProperty(participant.getPlayer().getUniqueId(), "event.message.StrongholdLocationMessage") + " \nX: "+stronghold.getX() + " \nY: "+stronghold.getY() + " \nZ: " + stronghold.getZ()
+                   + " \n"
+                   + " \n" +"*********************************************************************");
         });
 
     }
