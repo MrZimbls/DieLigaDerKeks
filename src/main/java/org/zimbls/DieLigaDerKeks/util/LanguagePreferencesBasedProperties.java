@@ -19,8 +19,13 @@ public class LanguagePreferencesBasedProperties {
       languagePreferences.put(player, language);
    }
 
-   public static String getProperty(UUID player, String key) throws Exception {
-      return getLanguageProperties(player).getProperty(key);
+   public static String getProperty(UUID player, String key) {
+      try {
+         return getLanguageProperties(player).getProperty(key);
+      } catch (Exception e) {
+         e.printStackTrace();
+         return null;
+      }
    }
 
    public static Properties getLanguageProperties(UUID player) throws Exception {

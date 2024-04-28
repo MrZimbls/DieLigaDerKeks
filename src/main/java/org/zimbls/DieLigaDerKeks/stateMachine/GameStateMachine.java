@@ -113,6 +113,7 @@ public class GameStateMachine {
         if (runEvent) {
             game.getActivEvent().runEvent();
         }
+        game.enablePvP(true);
         runGame(GameState.EVENT);
     }
 

@@ -1,6 +1,7 @@
 package org.zimbls.DieLigaDerKeks.game;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.zimbls.DieLigaDerKeks.game.events.Event;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 import org.zimbls.DieLigaDerKeks.util.ImportMobCsv;
+import org.zimbls.DieLigaDerKeks.util.LanguagePreferencesBasedProperties;
 import org.zimbls.DieLigaDerKeks.util.Mob;
 import org.zimbls.DieLigaDerKeks.util.TimerTask;
 
@@ -33,6 +35,7 @@ public class Game {
     private Map<Player, Boolean> eventVotes = new HashMap<>();
     private Event activEvent;
     private boolean eventVotesClosed = false;
+    private boolean pvpEnabled = false;
 
     public Game(World lobbyMap, JavaPlugin plugin, GameStateMachine state) {
         this.lobbyMap = lobbyMap;
@@ -134,6 +137,7 @@ public class Game {
 
     public void createGameWorld() {
         this.gameMap = new GameMap();
+        this.gameMap.getGameWorld().setPVP(false);
     }
 
     public GameMap getGameWorld() {
@@ -204,5 +208,15 @@ public class Game {
 
     public void setEventVotesClosed(boolean eventVotesClosed) {
         this.eventVotesClosed = eventVotesClosed;
+    }
+
+    public void enablePvP(boolean pvpEnabled) {
+        if (!this.pvpEnabled && pvpEnabled) {
+            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + LanguagePreferencesBasedProperties.getProperty(player.getUniqueId(), "game.messages.enabledPvP")));
+        } else if (this.pvpEnabled && !pvpEnabled) {
+            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.GREEN + ChatColor.BOLD.toString() + "PvP is now disabled!"));
+        }
+        this.pvpEnabled = pvpEnabled;
+        gameMap.getGameWorld().setPVP(pvpEnabled);
     }
 }
