@@ -12,7 +12,7 @@ import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 import org.zimbls.DieLigaDerKeks.util.Mob;
 
 public class MobKillListener implements Listener {
-   private GameStateMachine state;
+   private final GameStateMachine state;
    public MobKillListener(GameStateMachine state){
       this.state = state;
    }

@@ -6,6 +6,7 @@ import org.zimbls.DieLigaDerKeks.commands.LigaCommandHandler;
 import org.zimbls.DieLigaDerKeks.listener.MenueventListener;
 import org.zimbls.DieLigaDerKeks.listener.MobKillListener;
 import org.zimbls.DieLigaDerKeks.listener.PlayerDeathListener;
+import org.zimbls.DieLigaDerKeks.listener.SleepInBedListener;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 
 public class DieLigaDerKeks extends JavaPlugin {
@@ -16,6 +17,7 @@ public class DieLigaDerKeks extends JavaPlugin {
       getServer().getPluginManager().registerEvents(new MobKillListener(state), this);
       getServer().getPluginManager().registerEvents(new MenueventListener(), this);
       getServer().getPluginManager().registerEvents(new PlayerDeathListener(state), this);
+      getServer().getPluginManager().registerEvents(new SleepInBedListener(state), this);
       getLogger().info("DieLigaDerKeks is running in state: " + state.getState());
    }
    @Override
