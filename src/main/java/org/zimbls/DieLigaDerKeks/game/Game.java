@@ -21,7 +21,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Game {
-
     private Map<String, Participant> participants = new HashMap<>();
     private Set<Participant> players = new HashSet<>();
     private ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
