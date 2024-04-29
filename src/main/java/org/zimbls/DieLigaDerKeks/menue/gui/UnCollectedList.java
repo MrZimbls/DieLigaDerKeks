@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.zimbls.DieLigaDerKeks.menue.FilterTemperItem;
 import org.zimbls.DieLigaDerKeks.menue.FilterWorldItem;
 import org.zimbls.DieLigaDerKeks.menue.PagedMenu;
 import org.zimbls.DieLigaDerKeks.menue.PlayerGuiData;
@@ -20,6 +21,7 @@ public class UnCollectedList extends PagedMenu {
 
    private Mob[] unkilledMobs;
    private FilterWorldItem filterWorldItem = new FilterWorldItem();
+   private FilterTemperItem filterTemperItem = new FilterTemperItem();
 
    public UnCollectedList(PlayerGuiData playerGuiData){
       super(playerGuiData);
@@ -58,6 +60,10 @@ public class UnCollectedList extends PagedMenu {
             filterWorldItem.nextFilter();
             page = 0;
             super.open();
+         } else if (e.getCurrentItem().getItemMeta().getLore().contains(ChatColor.GRAY + "Filter by temper")) {
+            filterTemperItem.nextFilter();
+            page = 0;
+            super.open();
          }
       }else if (e.getCurrentItem().getType().equals(Material.BARRIER)) {
          //close inventory
@@ -70,15 +76,16 @@ public class UnCollectedList extends PagedMenu {
       addMenuBorder();
 
       inventory.setItem(2, filterWorldItem.getFilterItem());
+      inventory.setItem(6, filterTemperItem.getFilterItem());
 
       Set<Mob> mobs = new HashSet<>(playerGuiData.getGame().getMobMap().values());
       Set<Mob> unkilledMobsSet = new HashSet<>();
       for (Mob mob:mobs) {
          if (!playerGuiData.getParticipant().getKilledMobs().contains(mob)){
-            if (filterWorldItem.getSelectedFilter() == "All") {
-               unkilledMobsSet.add(mob);
-            } else if (mob.getSpawnWorld().equalsIgnoreCase(filterWorldItem.getSelectedFilter())) {
-               unkilledMobsSet.add(mob);
+            if ("All".equals(filterWorldItem.getSelectedFilter()) || mob.getSpawnWorld().equalsIgnoreCase(filterWorldItem.getSelectedFilter())) {
+               if ("All".equals(filterTemperItem.getSelectedFilter()) || mob.getTemper().equalsIgnoreCase(filterTemperItem.getSelectedFilter())) {
+                  unkilledMobsSet.add(mob);
+               }
             }
          }
       }
