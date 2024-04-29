@@ -7,7 +7,7 @@ commands:
   liga:
     description: Starts the game
     usage: /liga [start|break|continue]
-    permission: dieLigaDerKeks.liga
+    permission: dieLigaDerKeks.admin
     permission-message: You do not have permission to manage the league
   ready:
     description: Marks a player as ready
@@ -24,15 +24,15 @@ commands:
   revive:
     description: Revive a dead participant
     usage: /revive <player name>
-    permission: dieLigaDerKeks.revive
+    permission: dieLigaDerKeks.admin
     permission-message: You do not have permission to revive
   addPoints:
     description: Add points to a player
     usage: /addPoints <player name> <points>
-    permission: dieLigaDerKeks.addPoints
+    permission: dieLigaDerKeks.admin
     permission-message: You do not have permission to add points
   removePoints:
     description: Remove points from  player
     usage: /removePoints <player name> <points>
-    permission: dieLigaDerKeks.removePoints
+    permission: dieLigaDerKeks.admin
     permission-message: You do not have permission to remove points
