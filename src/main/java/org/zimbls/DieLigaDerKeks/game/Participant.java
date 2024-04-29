@@ -39,6 +39,11 @@ public class Participant {
       points += amount;
    }
 
+   public void removePoints(Integer amount) {
+      points -= amount;
+      if (points < 0) points = 0;
+   }
+
    public void setPoints(int p) {
       points = p;
    }

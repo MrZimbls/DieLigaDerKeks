@@ -6,7 +6,9 @@ api-version: 1.20
 commands:
   liga:
     description: Starts the game
-    usage: /liga start
+    usage: /liga [start|break|continue]
+    permission: dieLigaDerKeks.admin
+    permission-message: You do not have permission to manage the league
   ready:
     description: Marks a player as ready
     usage: /ready
@@ -19,3 +21,18 @@ commands:
   language:
     description: Change the language
     usage: /language [en|de]
+  revive:
+    description: Revive a dead participant
+    usage: /revive <player name>
+    permission: dieLigaDerKeks.admin
+    permission-message: You do not have permission to revive
+  addPoints:
+    description: Add points to a player
+    usage: /addPoints <player name> <points>
+    permission: dieLigaDerKeks.admin
+    permission-message: You do not have permission to add points
+  removePoints:
+    description: Remove points from  player
+    usage: /removePoints <player name> <points>
+    permission: dieLigaDerKeks.admin
+    permission-message: You do not have permission to remove points
