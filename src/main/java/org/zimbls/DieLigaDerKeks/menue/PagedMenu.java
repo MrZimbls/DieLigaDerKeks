@@ -20,6 +20,14 @@ public abstract class PagedMenu extends Menu{
 
     public void addMenuBorder(){
 
+        if (playerGuiData.getParticipant() != null) {
+            ItemStack points = CustomSkulls.REDSTONE_P.getSkull();
+            ItemMeta pointsMeta = points.getItemMeta();
+            pointsMeta.setDisplayName(ChatColor.GREEN + String.valueOf(playerGuiData.getParticipant().getPoints()) + ChatColor.WHITE + " Points");
+            points.setItemMeta(pointsMeta);
+            inventory.setItem(4, points);
+        }
+
         ItemStack left = CustomSkulls.BLUE_LEFT.getSkull();
         ItemMeta leftMeta = left.getItemMeta();
         leftMeta.setDisplayName(ChatColor.BLUE + "Previous");
@@ -33,17 +41,6 @@ public abstract class PagedMenu extends Menu{
         rightMeta.setDisplayName(ChatColor.BLUE + "Next");
         right.setItemMeta(rightMeta);
         inventory.setItem(50, right);
-
-        if (playerGuiData.getParticipant() != null) {
-            ItemStack points = CustomSkulls.REDSTONE_P.getSkull();
-            ItemMeta pointsMeta = points.getItemMeta();
-            pointsMeta.setDisplayName(ChatColor.GREEN + String.valueOf(playerGuiData.getParticipant().getPoints()));
-            ArrayList<String> lore = new ArrayList<>();
-            pointsMeta.setLore(lore);
-            lore.add(ChatColor.DARK_GRAY + "Points");
-            points.setItemMeta(pointsMeta);
-            inventory.setItem(4, points);
-        }
 
         for (int i = 0; i < 10; i++) {
             if (inventory.getItem(i) == null) {

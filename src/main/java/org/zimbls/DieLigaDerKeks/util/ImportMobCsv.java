@@ -15,13 +15,15 @@ public class ImportMobCsv {
          String line;
          while ((line = br.readLine()) != null) {
             String[] parts = line.split(",");
-            if (parts.length == 5) {
+            if (parts.length == 7) {
                String mobName = parts[0].trim();
                int points = Integer.parseInt(parts[1].trim());
                String reward = parts[2].trim();
                int amount = Integer.parseInt(parts[3].trim());
                ItemStack head = SkullBuilder.create(parts[4].trim());
-               mobPoints.put(mobName, new Mob(mobName, points, reward, amount, head));
+               String spawnWorld = parts[5].trim();
+               String temper = parts[6].trim();
+               mobPoints.put(mobName, new Mob(mobName, points, reward, amount, head, spawnWorld, temper));
             }
          }
       } catch (IOException e) {

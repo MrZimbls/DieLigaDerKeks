@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.zimbls.DieLigaDerKeks.menue.FilterWorldItem;
 import org.zimbls.DieLigaDerKeks.menue.PagedMenu;
 import org.zimbls.DieLigaDerKeks.menue.PlayerGuiData;
 import org.zimbls.DieLigaDerKeks.util.Mob;
@@ -18,6 +19,7 @@ import java.util.Set;
 public class UnCollectedList extends PagedMenu {
 
    private Mob[] unkilledMobs;
+   private FilterWorldItem filterWorldItem = new FilterWorldItem();
 
    public UnCollectedList(PlayerGuiData playerGuiData){
       super(playerGuiData);
@@ -45,13 +47,17 @@ public class UnCollectedList extends PagedMenu {
                page = page - 1;
                super.open();
             }
-         }else if (ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).equalsIgnoreCase("Next")){
+         } else if (ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).equalsIgnoreCase("Next")){
             if (!((index + 1) >= unkilledMobs.length)){
                page = page + 1;
                super.open();
             }else{
                player.sendMessage(ChatColor.GRAY + "You are on the last page.");
             }
+         } else if (e.getCurrentItem().getItemMeta().getLore().contains(ChatColor.GRAY + "Filter by spawn World")) {
+            filterWorldItem.nextFilter();
+            page = 0;
+            super.open();
          }
       }else if (e.getCurrentItem().getType().equals(Material.BARRIER)) {
          //close inventory
@@ -63,14 +69,19 @@ public class UnCollectedList extends PagedMenu {
    public void setGuiItems() {
       addMenuBorder();
 
+      inventory.setItem(2, filterWorldItem.getFilterItem());
+
       Set<Mob> mobs = new HashSet<>(playerGuiData.getGame().getMobMap().values());
       Set<Mob> unkilledMobsSet = new HashSet<>();
       for (Mob mob:mobs) {
          if (!playerGuiData.getParticipant().getKilledMobs().contains(mob)){
-            unkilledMobsSet.add(mob);
+            if (filterWorldItem.getSelectedFilter() == "All") {
+               unkilledMobsSet.add(mob);
+            } else if (mob.getSpawnWorld().equalsIgnoreCase(filterWorldItem.getSelectedFilter())) {
+               unkilledMobsSet.add(mob);
+            }
          }
       }
-
 
       this.unkilledMobs = unkilledMobsSet.toArray(Mob[]::new);
 
