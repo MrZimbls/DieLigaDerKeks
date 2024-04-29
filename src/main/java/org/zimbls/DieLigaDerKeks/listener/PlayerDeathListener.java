@@ -21,12 +21,20 @@ public class PlayerDeathListener implements Listener {
 
    @EventHandler
    public void onPlayerDeath(PlayerDeathEvent event) {
+      // Prevent the player from losing their inventory
+      event.setKeepInventory(true);
+
       Player player = event.getEntity();
-      if (state.getState() != GameState.RUNNING) {
-         return;
-      }
       Participant participant = state.getGame().getParticipantByName(player.getName());
-      if (participant != null) { // Check if the game is running
+
+      // If the player dies, set it's last game location to use it for the revive command
+      participant.setLastGameLocation();
+
+      if (state.getState() != GameState.RUNNING) return;
+
+      participant.setLastGameLocation();
+
+      if (participant != null) {
          player.setGameMode(GameMode.SPECTATOR); // Set the player's game mode to Spectator
          participant.setDead(true);
          if (player.getKiller() != null) {

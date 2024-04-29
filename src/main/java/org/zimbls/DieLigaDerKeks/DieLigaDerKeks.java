@@ -2,6 +2,7 @@ package org.zimbls.DieLigaDerKeks;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.zimbls.DieLigaDerKeks.commands.LigaCommandHandler;
+import org.zimbls.DieLigaDerKeks.commands.ReviveCommand;
 import org.zimbls.DieLigaDerKeks.listener.MenueventListener;
 import org.zimbls.DieLigaDerKeks.listener.MobKillListener;
 import org.zimbls.DieLigaDerKeks.listener.PlayerDeathListener;
@@ -17,6 +18,8 @@ public class DieLigaDerKeks extends JavaPlugin {
       getServer().getPluginManager().registerEvents(new MenueventListener(), this);
       getServer().getPluginManager().registerEvents(new PlayerDeathListener(state), this);
       getServer().getPluginManager().registerEvents(new FirstToSleepInBedListener(state), this);
+
+      getCommand("revive").setExecutor(new ReviveCommand(this, state));
       getLogger().info("DieLigaDerKeks is running in state: " + state.getState());
    }
    @Override

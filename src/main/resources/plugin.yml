@@ -19,3 +19,6 @@ commands:
   language:
     description: Change the language
     usage: /language [en|de]
+  revive:
+    description: Revive a dead participant
+    usage: /revive <player name>
