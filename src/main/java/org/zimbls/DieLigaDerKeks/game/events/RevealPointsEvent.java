@@ -41,8 +41,8 @@ public class RevealPointsEvent extends Event {
                 participant.getPlayer().sendMessage(ChatColor.GREEN + "#" + counter + " " + p.getPlayer().getName() + " ---> " + p.getPoints() + " Points");
             });
 
-            participant.getPlayer().sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "---");
             participant.getPlayer().sendMessage("");
+            participant.getPlayer().sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "---");
         });
     }
 

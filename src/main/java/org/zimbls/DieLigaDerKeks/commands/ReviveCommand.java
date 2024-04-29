@@ -38,8 +38,6 @@ public class ReviveCommand implements CommandExecutor {
             return false;
         }
 
-        System.out.println("Passed args" + Arrays.toString(args));
-
         // Check if the command has the correct number of arguments
         if (args.length != 1) {
             sender.sendMessage(ChatColor.RED + "Invalid number of arguments");
@@ -47,36 +45,31 @@ public class ReviveCommand implements CommandExecutor {
         }
 
         String playerName = args[0];
-        Participant playerToRevive = null;
-        for (Participant participant : state.getGame().getParticipants()) {
-            if (participant.getPlayer().getName().equals(playerName)) {
-                playerToRevive = participant;
-                break;
-            }
-        }
+        Participant participantToRevive = state.getGame().getParticipantByName(playerName);
 
-        if (playerToRevive == null) {
+        if (participantToRevive == null) {
             sender.sendMessage(ChatColor.RED + "Player not found");
             return false;
         }
 
-        System.out.println("Player to revive: " + playerToRevive.getPlayer().getName());
+        System.out.println("Player to revive: " + participantToRevive.getPlayer().getName());
 
-        if (!playerToRevive.isDead()) {
+        if (!participantToRevive.isDead()) {
             sender.sendMessage(ChatColor.RED + "Player is not dead");
             return false;
         }
 
         // Final variable to be used in the lambda expression
-        Participant finalPlayerToRevive = playerToRevive;
+        Participant finalPlayerToRevive = participantToRevive;
+        finalPlayerToRevive.getPlayer().sendMessage(ChatColor.GREEN + "You have been revived! You are now invulnerable for 5 seconds.");
 
         // Make the player invulnerable for 5 seconds
         finalPlayerToRevive.getPlayer().setInvulnerable(true);
         finalPlayerToRevive.setDead(false);
         finalPlayerToRevive.getPlayer().setGameMode(GameMode.SURVIVAL);
         finalPlayerToRevive.getPlayer().teleport(finalPlayerToRevive.getLastGameLocation());
-        finalPlayerToRevive.getPlayer().sendMessage(ChatColor.GREEN + "You have been revived! You are now invulnerable for 5 seconds.");
 
+        // Remove invulnerability after 5 seconds
         BukkitScheduler scheduler = Bukkit.getScheduler();
         scheduler.runTaskLater(plugin, () -> {
             finalPlayerToRevive.getPlayer().setInvulnerable(false);

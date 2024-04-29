@@ -29,7 +29,6 @@ public class GameMap {
       border.setDamageBuffer(5); // Distance a player can safely be outside the border
       border.setWarningDistance(10); // Distance a player will be warned when near the border
       border.setWarningTime(15); // Time in seconds a player will be warned when near the border
-
    }
 
    public void halfWorldBorder(int delay){

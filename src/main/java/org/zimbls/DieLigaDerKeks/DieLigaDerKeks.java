@@ -1,7 +1,9 @@
 package org.zimbls.DieLigaDerKeks;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.zimbls.DieLigaDerKeks.commands.AddPointsCommand;
 import org.zimbls.DieLigaDerKeks.commands.LigaCommandHandler;
+import org.zimbls.DieLigaDerKeks.commands.RemovePointsCommand;
 import org.zimbls.DieLigaDerKeks.commands.ReviveCommand;
 import org.zimbls.DieLigaDerKeks.listener.MenueventListener;
 import org.zimbls.DieLigaDerKeks.listener.MobKillListener;
@@ -20,6 +22,8 @@ public class DieLigaDerKeks extends JavaPlugin {
       getServer().getPluginManager().registerEvents(new FirstToSleepInBedListener(state), this);
 
       getCommand("revive").setExecutor(new ReviveCommand(this, state));
+      getCommand("addPoints").setExecutor(new AddPointsCommand(this, state));
+      getCommand("removePoints").setExecutor(new RemovePointsCommand(this, state));
       getLogger().info("DieLigaDerKeks is running in state: " + state.getState());
    }
    @Override
