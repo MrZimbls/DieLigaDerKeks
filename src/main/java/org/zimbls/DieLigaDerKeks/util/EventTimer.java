@@ -26,11 +26,7 @@ public class EventTimer extends BukkitRunnable {
    @Override
    public void run() {
       if (remainingTime <= 0) {
-         if (state.getGame().getYesVotes() > state.getGame().getNoVotes()) {
-            state.endEvent(true);
-         } else {
-            state.endEvent(false);
-         }
+         state.endEvent(state.getGame().getYesVotes() > state.getGame().getNoVotes());
 
          this.cancel();
       }

@@ -53,7 +53,6 @@ public class RevealLocationEvent extends Event {
                 participant.getPlayer().sendMessage(ChatColor.GREEN + p.getPlayer().getName() + ChatColor.RESET + " is at " + locationString + " and " + ChatColor.RED + distance + ChatColor.RESET + " blocks away from you!");
             });
         });
-
     }
 
     @Override

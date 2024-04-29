@@ -18,7 +18,7 @@ public class GameStateMachine {
     private Game game;
     private final ArrayList<Event> availableEvents = new ArrayList<>();
     private JavaPlugin plugin;
-    BukkitTask reminderTask;
+    BukkitTask readyReminderTask;
 
     public GameStateMachine() {
         currentState = GameState.STOPPED; // Initial state
@@ -43,17 +43,18 @@ public class GameStateMachine {
         availableEvents.add(new RevealLocationEvent(this));
         availableEvents.add(new BuffLastTwoPlayersEvent(this));
         availableEvents.add(new NerfTopTwoPlayersEvent(this));
+        availableEvents.add(new FirstToSleepInBedEvent(this));
         this.plugin = plugin;
 
         // Triggered when the game is first started
         plugin.getServer().getOnlinePlayers().forEach(player -> {
-            player.sendTitle(ChatColor.GREEN + "Game started!", "Waiting for everyone to enter /ready in the cat!", 10, 70, 20);
+            player.sendTitle(ChatColor.GREEN + "Game starting soon!", "Please enter /ready in the chat to join the game!", 10, 70, 20);
             player.sendMessage("Please enter " + ChatColor.GREEN + "/ready" + ChatColor.RESET + " to join the game!");
         });
 
         // Send a reminder message to all online players who haven't entered /ready yet
-        this.reminderTask = new ReminderTask(plugin, game, "Please enter " + ChatColor.GREEN + "/ready" + ChatColor.RESET + " to join the game if you haven't already and would like to participate!")
-            .runTaskTimer(plugin, 15 * 20L, 20L * 30);
+        this.readyReminderTask = new ReminderTask(plugin, game, "Please enter " + ChatColor.GREEN + "/ready" + ChatColor.RESET + " to join the game if you haven't already and would like to participate!")
+                .runTaskTimer(plugin, 15 * 20L, 20L * 30);
     }
 
     public void runGame(GameState previousState) {
@@ -62,12 +63,16 @@ public class GameStateMachine {
         game.teleportAllPlayersToGameMap();
         game.continueTimer();
         game.setGameScoreboard();
-        this.reminderTask.cancel();
+        this.readyReminderTask.cancel();
 
         // Triggered when the game continues after a pause
-        if (previousState != GameState.STARTING) {
+        if (previousState == GameState.PAUSED) {
             game.getParticipants().forEach(participant -> {
                 participant.getPlayer().sendTitle(ChatColor.GREEN + "Game continuing!", "The next event starts in 30 minutes!", 10, 70, 20);
+            });
+        } else if (previousState == GameState.STARTING) {
+            game.getParticipants().forEach(participant -> {
+                participant.getPlayer().sendTitle(ChatColor.GREEN + "Game started!", "The first event starts in 30 minutes!", 10, 70, 20);
             });
         }
     }
@@ -95,6 +100,8 @@ public class GameStateMachine {
             participant.getPlayer().sendMessage("When the majority of players voted YES for it, the event will happen!");
         });
 
+        // TODO: Send a reminder message to all online players who haven't entered /vote yet
+
         ArrayList<Event> possibleEvents = new ArrayList<Event>();
         for (Event event : availableEvents) {
             if (event.isPossibleForPlayerCount(game.getNumberOfPlayersAlive())) {
@@ -115,6 +122,11 @@ public class GameStateMachine {
     public void endEvent(boolean runEvent) {
         if (runEvent) {
             game.getActivEvent().runEvent();
+        } else {
+            game.getParticipants().forEach(participant -> {
+                participant.getPlayer().sendTitle(ChatColor.GREEN + "No event!", "The next event starts in 30 minutes!", 10, 70, 20);
+                participant.getPlayer().sendMessage(ChatColor.GREEN + "The game will continue without an event! Not enough players voted YES for the event!");
+            });
         }
         game.enablePvP(true);
         runGame(GameState.EVENT);

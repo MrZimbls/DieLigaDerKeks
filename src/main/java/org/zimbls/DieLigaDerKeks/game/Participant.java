@@ -35,6 +35,10 @@ public class Participant {
       return points;
    }
 
+   public void addPoints(Integer amount) {
+      points += amount;
+   }
+
    public void setPoints(int p) {
       points = p;
    }
