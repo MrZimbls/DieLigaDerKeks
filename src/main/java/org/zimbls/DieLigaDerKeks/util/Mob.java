@@ -8,11 +8,15 @@ public class Mob {
    private int points;
    private ItemStack reward;
    private ItemStack head;
+   private String spawnWorld;
+   private String temper;
 
-   public Mob(String name,int points, String reward, int rewardAmount, ItemStack head){
+   public Mob(String name,int points, String reward, int rewardAmount, ItemStack head, String spawnWorld, String temper){
       this.name = name;
       this.points = points;
       this.head = head;
+      this.spawnWorld = spawnWorld;
+      this.temper = temper;
 
       String itemName = reward.substring("minecraft:".length()).toUpperCase();
       Material material = Material.matchMaterial(itemName);
@@ -36,5 +40,13 @@ public class Mob {
 
    public ItemStack getHead() {
       return head;
+   }
+
+   public String getSpawnWorld() {
+      return spawnWorld;
+   }
+
+   public String getTemper() {
+      return temper;
    }
 }
