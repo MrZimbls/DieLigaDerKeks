@@ -33,7 +33,7 @@ public class voteYesOrNo extends Menu {
     public void handleGui(InventoryClickEvent e) {
         String itemName = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).toUpperCase();
         Player p = (Player) e.getWhoClicked();
-        String eventTitle = playerGuiData.getGame().getActivEvent().getTitle();
+        String eventTitle = playerGuiData.getGame().getActiveEvent().getTitle();
 
         switch (itemName) {
             case "YES" -> {
@@ -57,7 +57,7 @@ public class voteYesOrNo extends Menu {
         ItemMeta infoMeta = info.getItemMeta();
         infoMeta.setDisplayName(ChatColor.YELLOW + "Info:");
         ArrayList<String> lore = new ArrayList<>();
-        String propertyName = "event.description." + playerGuiData.getGame().getActivEvent().getTitle();
+        String propertyName = "event.description." + playerGuiData.getGame().getActiveEvent().getTitle();
         String description;
 
         try {

@@ -58,7 +58,15 @@ public class LigaCommandHandler implements CommandExecutor {
                         return true;
                     }
                 }
-                if (args[0].equalsIgnoreCase("break")) {
+                if (args[0].equalsIgnoreCase("restart")) {
+                    if (!(sender instanceof Player player)) {
+                        sender.sendMessage("Only players can use this command!");
+                        return true;
+                    }
+                    state.restartGame(plugin);
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("pause")) {
                     if (state.getState() == GameState.RUNNING) {
                         Bukkit.broadcastMessage("Game is pausing!");
                         state.pauseGame();
