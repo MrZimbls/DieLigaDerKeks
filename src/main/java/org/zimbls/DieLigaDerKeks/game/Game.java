@@ -6,10 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.*;
 import org.zimbls.DieLigaDerKeks.game.events.Event;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 import org.zimbls.DieLigaDerKeks.util.ImportMobCsv;
@@ -26,7 +23,6 @@ public class Game {
     private ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
     private Map<String, Mob> mobMap;
     private Scoreboard scoreboard;
-    private GameScoreboard gameScoreboard;
     private TimerTask timerTask;
     private Objective objective;
     private GameMap gameMap;
@@ -41,8 +37,7 @@ public class Game {
 
         setupScoreboard();
         mobMap = ImportMobCsv.loadMobPoints("plugins/rewardTable.csv");
-        gameScoreboard = new GameScoreboard();
-        timerTask = new TimerTask(gameScoreboard, state);
+        timerTask = new TimerTask(state);
         timerTask.setPaused(true);
         timerTask.runTaskTimer(plugin, 0L, 20L);
     }
@@ -91,7 +86,7 @@ public class Game {
     public void setGameScoreboard() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             if (participants.containsKey(player.getName())) {
-                player.setScoreboard(gameScoreboard.getScoreboard());
+                getParticipantByName(player.getName()).setScoreboard();
             }
         });
     }
