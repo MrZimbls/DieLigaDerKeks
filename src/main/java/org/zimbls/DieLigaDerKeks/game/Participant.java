@@ -13,9 +13,11 @@ public class Participant {
    private boolean isDead = false;
    private Location lastGameLocation;
    private int points = 0;
+   private GameScoreboard scoreboard;
 
    public Participant(Player player) {
       this.player = player;
+      this.scoreboard = new GameScoreboard();
    }
 
    public boolean addIfNewMob(Mob mob) {
@@ -70,5 +72,13 @@ public class Participant {
 
    public void setDead(boolean dead) {
       isDead = dead;
+   }
+
+   public GameScoreboard getScoreboard() {
+      return scoreboard;
+   }
+
+   public void setScoreboard() {
+      player.setScoreboard(scoreboard.getScoreboard());
    }
 }
