@@ -1,5 +1,6 @@
 package org.zimbls.DieLigaDerKeks.game;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.zimbls.DieLigaDerKeks.util.Mob;
@@ -42,6 +43,14 @@ public class Participant {
    public void removePoints(Integer amount) {
       points -= amount;
       if (points < 0) points = 0;
+   }
+
+   public void resetPlayer() {
+      killedMobs.clear();
+      points = 0;
+      isDead = false;
+      player.setGameMode(GameMode.SURVIVAL);
+      lastGameLocation = null;
    }
 
    public void setPoints(int p) {

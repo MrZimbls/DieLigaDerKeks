@@ -31,7 +31,7 @@ public class FirstToSleepInBedListener implements Listener {
         // Check if the listener is active
         if (!listenerActive) return;
 
-        Event activeEvent = state.getGame().getActivEvent();
+        Event activeEvent = state.getGame().getActiveEvent();
 
         // Check if the active event is the SleepInBedChallenge
         if (activeEvent == null || !activeEvent.getTitle().equals("SleepInBedChallenge")) return;

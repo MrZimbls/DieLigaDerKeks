@@ -85,6 +85,21 @@ public class GameStateMachine {
         game.pauseTimer();
     }
 
+    public void restartGame(JavaPlugin plugin) {
+        readyReminderTask.cancel();
+        game.resetParticipants();
+        game.clearScoreboards();
+        game.cancelTimer();
+
+        // Teleport player back to lobby map
+        game.teleportAllPlayersToLobbyMap();
+        // Use the same lobby map for the new game to prevent wrong teleporting
+        World lobbyMap = game.getlobbyMap();
+
+        // Start the game again and create a new game world
+        this.startGame(lobbyMap, plugin);
+    }
+
     public void triggerEvent() {
         currentState = GameState.EVENT;
         game.setAllLastGameLocations();
@@ -111,7 +126,7 @@ public class GameStateMachine {
         }
 
         Collections.shuffle(possibleEvents);
-        game.setActivEvent(possibleEvents.get(0));
+        game.setActiveEvent(possibleEvents.get(0));
 
         EventScoreboard eventScoreboard = new EventScoreboard();
         game.setEventScoreboard(eventScoreboard);
@@ -121,7 +136,7 @@ public class GameStateMachine {
 
     public void endEvent(boolean runEvent) {
         if (runEvent) {
-            game.getActivEvent().runEvent();
+            game.getActiveEvent().runEvent();
         } else {
             game.getParticipants().forEach(participant -> {
                 participant.getPlayer().sendTitle(ChatColor.GREEN + "No event!", "The next event starts in 30 minutes!", 10, 70, 20);

@@ -88,6 +88,10 @@ public class Game {
         }
     }
 
+    public World getlobbyMap() {
+        return lobbyMap;
+    }
+
     public void setGameScoreboard() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             if (participants.containsKey(player.getName())) {
@@ -106,9 +110,7 @@ public class Game {
 
     public void addPlayerToGame(Player player) {
         players.forEach(participant -> {
-            if (participant.getPlayer() == player) {
-                return;
-            }
+            if (participant.getPlayer() == player) return;
         });
         Participant participant = new Participant(player);
         players.add(participant);
@@ -126,6 +128,10 @@ public class Game {
 
     public Set<Participant> getParticipants() {
         return players;
+    }
+
+    public void resetParticipants() {
+        players.forEach(Participant::resetPlayer);
     }
 
     public Set<Player> getParticipatingPlayers() {
@@ -153,6 +159,10 @@ public class Game {
 
     public void pauseTimer() {
         timerTask.setPaused(true);
+    }
+
+    public void cancelTimer() {
+        timerTask.cancel();
     }
 
     public void continueTimer() {
@@ -193,11 +203,11 @@ public class Game {
         return counter.get();
     }
 
-    public Event getActivEvent() {
+    public Event getActiveEvent() {
         return activEvent;
     }
 
-    public void setActivEvent(Event activEvent) {
+    public void setActiveEvent(Event activEvent) {
         this.activEvent = activEvent;
     }
 
