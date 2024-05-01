@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameState;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 
@@ -26,6 +27,16 @@ public class PlayerEventListener implements Listener {
             } else if (state.getState() == GameState.EVENT || state.getState() == GameState.PAUSED) {
                state.getGame().getParticipantByName(player.getName()).teleportToLobbyMap(state.getGame().getLobbyMap());
             }
+         }
+      }
+   }
+
+   @EventHandler
+   public void onPlayerQuit(PlayerQuitEvent event) {
+      Player player = event.getPlayer();
+      if (state.getState() == GameState.RUNNING) {
+         if (state.getGame().getParticipatingPlayers().contains(player)) {
+            state.getGame().getParticipantByName(player.getName()).setLastGameLocation();
          }
       }
    }
