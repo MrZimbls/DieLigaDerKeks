@@ -2,6 +2,7 @@ package org.zimbls.DieLigaDerKeks.game;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.zimbls.DieLigaDerKeks.util.Mob;
 
@@ -89,5 +90,18 @@ public class Participant {
 
    public void setScoreboard() {
       player.setScoreboard(scoreboard.getScoreboard());
+   }
+
+   public void teleportToGameMap(GameMap gameMap) {
+      Location spawnLocation = gameMap.getGameWorld().getSpawnLocation(); // Get the spawn location of the world
+      if (this.lastGameLocation != null) {
+         spawnLocation = this.lastGameLocation;
+      }
+      player.teleport(spawnLocation);
+   }
+
+   public void teleportToLobbyMap(World lobbyMap) {
+      Location spawnLocation = lobbyMap.getSpawnLocation(); // Get the spawn location of the world
+      player.teleport(spawnLocation);
    }
 }

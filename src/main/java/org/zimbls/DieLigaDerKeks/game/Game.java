@@ -307,4 +307,8 @@ public class Game {
         this.pvpEnabled = pvpEnabled;
         gameMap.getGameWorld().setPVP(pvpEnabled);
     }
+
+    public World getLobbyMap() {
+        return lobbyMap;
+    }
 }
