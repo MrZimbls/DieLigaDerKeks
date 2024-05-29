@@ -6,12 +6,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.zimbls.DieLigaDerKeks.game.EventScoreboard;
 import org.zimbls.DieLigaDerKeks.game.Game;
+import org.zimbls.DieLigaDerKeks.game.Participant;
 import org.zimbls.DieLigaDerKeks.game.events.*;
 import org.zimbls.DieLigaDerKeks.util.EventTimer;
 import org.zimbls.DieLigaDerKeks.util.ReminderTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class GameStateMachine {
     private GameState currentState;
@@ -148,6 +150,17 @@ public class GameStateMachine {
     }
 
     public void stopGame() {
+        System.out.println("Stopping and ending the game!");
         currentState = GameState.STOPPED;
+        this.endGame();
+    }
+
+    private void endGame() {
+        this.game.teleportAllPlayersToLobbyMap();
+        List<Participant> sortedParticipants = this.game.sortParticipantsByPoints();
+        this.game.logGameProgress(sortedParticipants);
+        this.game.logGameWinner(sortedParticipants);
+        this.game.deleteGameWorld();
+        game = null;
     }
 }

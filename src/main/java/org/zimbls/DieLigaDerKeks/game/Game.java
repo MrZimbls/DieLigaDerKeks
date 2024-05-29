@@ -6,7 +6,10 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.*;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 import org.zimbls.DieLigaDerKeks.game.events.Event;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 import org.zimbls.DieLigaDerKeks.util.ImportMobCsv;
@@ -14,6 +17,10 @@ import org.zimbls.DieLigaDerKeks.util.LanguagePreferencesBasedProperties;
 import org.zimbls.DieLigaDerKeks.util.Mob;
 import org.zimbls.DieLigaDerKeks.util.TimerTask;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -63,6 +70,83 @@ public class Game {
                 onlinePlayer.teleport(spawnLocation);
             }
         }
+    }
+
+    public void deleteGameWorld() {
+        // Delete the game world
+        Bukkit.getServer().unloadWorld(gameMap.getGameWorld(), false);
+
+        String worldName = gameMap.getGameWorld().getName();
+        System.out.println("Deleting game world: " + worldName);
+
+        // Delete the world folder
+        File worldFolder = new File(Bukkit.getWorldContainer(), worldName);
+        try {
+            deleteDirectory(worldFolder);
+            System.out.println("Deleted game world: " + worldName);
+        } catch (IOException e) {
+            System.out.println("Failed to delete game world: " + worldName);
+        }
+    }
+
+    private void deleteDirectory(File directory) throws IOException {
+        if (directory.isDirectory()) {
+            Files.walk(Paths.get(directory.getPath()))
+                    .map(java.nio.file.Path::toFile)
+                    .sorted((o1, o2) -> -o1.compareTo(o2)) // sort in reverse order to delete files before directories
+                    .forEach(File::delete);
+        } else {
+            directory.delete();
+        }
+    }
+
+    public List<Participant> sortParticipantsByPoints() {
+        // Get all online participants
+        Set<Participant> participants = this.getParticipants();
+
+        // Loop through participants and collect their name and points, then sort them by points
+        List<Participant> sortedParticipants = new ArrayList<>(participants);
+
+        // Sort the participants by points
+        sortedParticipants.sort((p1, p2) -> p2.getPoints() - p1.getPoints());
+
+        return sortedParticipants;
+    }
+
+    public void logGameProgress(List<Participant> sortedParticipants) {
+        // Send a message to each participant with the sorted list of participants
+        sortedParticipants.forEach(participant -> {
+            // Counter for the ranking list
+            AtomicInteger counter = new AtomicInteger(0);
+            participant.getPlayer().sendMessage("");
+            participant.getPlayer().sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Player points:");
+            participant.getPlayer().sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "---");
+            participant.getPlayer().sendMessage("");
+
+            sortedParticipants.forEach(p -> {
+                counter.getAndIncrement();
+                participant.getPlayer().sendMessage(ChatColor.GREEN + "#" + counter + " " + p.getPlayer().getName() + " ---> " + p.getPoints() + " Points");
+            });
+
+            participant.getPlayer().sendMessage("");
+            participant.getPlayer().sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "---");
+            participant.getPlayer().sendMessage("");
+        });
+    }
+
+    public void logGameWinner(List<Participant> sortedParticipants) {
+        // Get the winner of the game
+        Participant winner = sortedParticipants.get(0);
+
+        // Send a message to the winner
+        winner.getPlayer().sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Congratulations! You won the game with " + winner.getPoints() + " points!");
+
+        sortedParticipants.forEach(participant -> {
+            if (participant != winner)
+                participant.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "You lost the game with " + participant.getPoints() + " points!");
+            // Send a title to each participant with the winner
+            participant.getPlayer().sendTitle(ChatColor.GOLD + "Game over!", winner.getPlayer().getName() + " has won the game!", 10, 70, 20);
+        });
     }
 
     private void setupScoreboard() {
