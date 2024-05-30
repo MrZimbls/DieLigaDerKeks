@@ -7,8 +7,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.zimbls.DieLigaDerKeks.game.EventScoreboard;
 import org.zimbls.DieLigaDerKeks.game.Game;
 import org.zimbls.DieLigaDerKeks.game.Participant;
-import org.zimbls.DieLigaDerKeks.game.events.Event;
-import org.zimbls.DieLigaDerKeks.game.events.FirstToSleepInBedEvent;
+import org.zimbls.DieLigaDerKeks.game.events.*;
 import org.zimbls.DieLigaDerKeks.util.EventTimer;
 import org.zimbls.DieLigaDerKeks.util.ReminderTask;
 
