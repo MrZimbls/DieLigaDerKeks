@@ -143,7 +143,7 @@ public class LigaCommandHandler implements CommandExecutor {
                 return true;
             }
             if (participant.isDead()) {
-                sender.sendMessage("You are dead! Onl the remaining players can vote!");
+                sender.sendMessage("You are dead! Only the remaining players can vote!");
                 return true;
             }
             if (state.getGame().isEventVotesClosed()) {
