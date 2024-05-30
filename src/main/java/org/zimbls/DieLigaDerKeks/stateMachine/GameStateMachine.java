@@ -7,7 +7,8 @@ import org.bukkit.scheduler.BukkitTask;
 import org.zimbls.DieLigaDerKeks.game.EventScoreboard;
 import org.zimbls.DieLigaDerKeks.game.Game;
 import org.zimbls.DieLigaDerKeks.game.Participant;
-import org.zimbls.DieLigaDerKeks.game.events.*;
+import org.zimbls.DieLigaDerKeks.game.events.Event;
+import org.zimbls.DieLigaDerKeks.game.events.FirstToSleepInBedEvent;
 import org.zimbls.DieLigaDerKeks.util.EventTimer;
 import org.zimbls.DieLigaDerKeks.util.ReminderTask;
 
@@ -21,6 +22,7 @@ public class GameStateMachine {
     private final ArrayList<Event> availableEvents = new ArrayList<>();
     private JavaPlugin plugin;
     BukkitTask readyReminderTask;
+    private EventScoreboard eventScoreboard;
 
     public GameStateMachine() {
         currentState = GameState.STOPPED; // Initial state
@@ -38,13 +40,13 @@ public class GameStateMachine {
         currentState = GameState.STARTING;
         game = new Game(lobbyMap, plugin, this);
         game.createGameWorld();
-        availableEvents.add(new RandomPlayerTpEvent(this));
-        availableEvents.add(new SwapPointsEvent(this));
-        availableEvents.add(new RevealPointsEvent(this));
-        availableEvents.add(new HalfWorldBorderEvent(this));
-        availableEvents.add(new RevealLocationEvent(this));
-        availableEvents.add(new BuffLastTwoPlayersEvent(this));
-        availableEvents.add(new NerfTopTwoPlayersEvent(this));
+//        availableEvents.add(new RandomPlayerTpEvent(this));
+//        availableEvents.add(new SwapPointsEvent(this));
+//        availableEvents.add(new RevealPointsEvent(this));
+//        availableEvents.add(new HalfWorldBorderEvent(this));
+//        availableEvents.add(new RevealLocationEvent(this));
+//        availableEvents.add(new BuffLastTwoPlayersEvent(this));
+//        availableEvents.add(new NerfTopTwoPlayersEvent(this));
         availableEvents.add(new FirstToSleepInBedEvent(this));
         this.plugin = plugin;
 
@@ -130,8 +132,9 @@ public class GameStateMachine {
         Collections.shuffle(possibleEvents);
         game.setActiveEvent(possibleEvents.get(0));
 
-        EventScoreboard eventScoreboard = new EventScoreboard();
+        this.eventScoreboard = new EventScoreboard();
         game.setEventScoreboard(eventScoreboard);
+
         EventTimer eventTask = new EventTimer(eventScoreboard, this, plugin);
         eventTask.runTaskTimer(plugin, 0L, 20L);
     }
@@ -161,6 +164,12 @@ public class GameStateMachine {
         this.game.logGameProgress(sortedParticipants);
         this.game.logGameWinner(sortedParticipants);
         this.game.deleteGameWorld();
+        game.cancelTimer();
         game = null;
+    }
+
+    public void setEventScoreboard(Participant participant) {
+        EventScoreboard gameScoreboard = this.eventScoreboard;
+        participant.getPlayer().setScoreboard(gameScoreboard.getScoreboard());
     }
 }

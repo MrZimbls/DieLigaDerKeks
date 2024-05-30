@@ -6,10 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.*;
 import org.zimbls.DieLigaDerKeks.game.events.Event;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 import org.zimbls.DieLigaDerKeks.util.ImportMobCsv;
@@ -151,7 +148,7 @@ public class Game {
 
     private void setupScoreboard() {
         scoreboard = scoreboardManager.getNewScoreboard();
-        objective = scoreboard.registerNewObjective("readyPlayers", "dummy", "Ready Players");
+        objective = scoreboard.registerNewObjective("readyPlayers", Criteria.DUMMY, "Ready Players");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
 
@@ -175,6 +172,8 @@ public class Game {
         Bukkit.getOnlinePlayers().forEach(player -> {
             if (participants.containsKey(player.getName())) {
                 getParticipantByName(player.getName()).setScoreboard();
+            } else {
+                System.out.println("Player " + player.getName() + " is not a participant in the game! Can't set game scoreboard!");
             }
         });
     }
@@ -183,6 +182,8 @@ public class Game {
         Bukkit.getOnlinePlayers().forEach(player -> {
             if (participants.containsKey(player.getName())) {
                 player.setScoreboard(eventScoreboard.getScoreboard());
+            } else {
+                System.out.println("Player " + player.getName() + " is not a participant in the game! Can't set event scoreboard!");
             }
         });
     }
@@ -199,6 +200,15 @@ public class Game {
 
     public Participant getParticipantByName(String name) {
         return participants.get(name);
+    }
+
+    public Participant getParticipantByUUID(UUID uuid) {
+        for (Participant participant : players) {
+            if (participant.getPlayer().getUniqueId().equals(uuid)) {
+                return participant;
+            }
+        }
+        return null;
     }
 
     public Mob getMobFormMobName(String name) {

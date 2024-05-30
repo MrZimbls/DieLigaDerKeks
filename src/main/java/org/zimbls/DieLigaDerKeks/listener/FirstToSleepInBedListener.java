@@ -23,8 +23,6 @@ public class FirstToSleepInBedListener implements Listener {
 
     @EventHandler
     public void onPlayerEnterBed(PlayerBedEnterEvent event) {
-        System.out.println("PlayerBedEnterEvent triggered!");
-
         // Check if the game is running and the challenge is active
         if (state.getState() != GameState.RUNNING) return;
 
@@ -34,12 +32,13 @@ public class FirstToSleepInBedListener implements Listener {
         Event activeEvent = state.getGame().getActiveEvent();
 
         // Check if the active event is the SleepInBedChallenge
-        if (activeEvent == null || !activeEvent.getTitle().equals("SleepInBedChallenge")) return;
+        if (activeEvent == null || !activeEvent.getTitle().equals("FirstToSleepInBedChallenge")) return;
 
         // Get all online participants
         Set<Participant> participants = state.getGame().getParticipants();
 
         Player player = event.getPlayer();
+        System.out.println("First player to trigger PlayerBedEnterEvent: " + player.getName());
         Participant participant = state.getGame().getParticipantByName(player.getName());
 
         if (participant == null) return;

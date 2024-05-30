@@ -1,26 +1,28 @@
 package org.zimbls.DieLigaDerKeks.game;
 
 import org.bukkit.Bukkit;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.*;
 
 public class EventScoreboard {
 
-   private Scoreboard scoreboard;
-   private Objective objective;
+    private Scoreboard scoreboard;
+    private Objective objective;
 
-   public EventScoreboard() {
-      this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-      this.objective = scoreboard.registerNewObjective("timer", "dummy", "Event Time");
-      this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-   }
+    public EventScoreboard() {
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        if (manager == null) throw new IllegalStateException("Scoreboard manager is not available.");
 
-   public Scoreboard getScoreboard() {
-      return scoreboard;
-   }
+        this.scoreboard = manager.getNewScoreboard();
+        this.objective = scoreboard.registerNewObjective("timer", Criteria.DUMMY, "Event Time");
 
-   public Objective getObjective() {
-      return objective;
-   }
+        this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+    }
+
+    public Scoreboard getScoreboard() {
+        return scoreboard;
+    }
+
+    public Objective getObjective() {
+        return objective;
+    }
 }
