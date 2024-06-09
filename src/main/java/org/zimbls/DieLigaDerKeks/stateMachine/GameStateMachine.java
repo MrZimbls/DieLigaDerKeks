@@ -18,6 +18,7 @@ import java.util.List;
 public class GameStateMachine {
     private GameState currentState;
     private Game game;
+    private World lobbyMap;
     private final ArrayList<Event> availableEvents = new ArrayList<>();
     private JavaPlugin plugin;
     BukkitTask readyReminderTask;
@@ -37,7 +38,12 @@ public class GameStateMachine {
 
     public void startGame(World lobbyMap, JavaPlugin plugin) {
         currentState = GameState.STARTING;
-        game = new Game(lobbyMap, plugin, this);
+        if (lobbyMap == null) {
+            game = new Game(lobbyMap, plugin, this);
+            this.lobbyMap = lobbyMap;
+        } else {
+            game = new Game(this.lobbyMap, plugin, this);
+        }
         game.createGameWorld();
         availableEvents.add(new RandomPlayerTpEvent(this));
         availableEvents.add(new SwapPointsEvent(this));
@@ -170,5 +176,9 @@ public class GameStateMachine {
     public void setEventScoreboard(Participant participant) {
         EventScoreboard gameScoreboard = this.eventScoreboard;
         participant.getPlayer().setScoreboard(gameScoreboard.getScoreboard());
+    }
+
+    public void setLobbyMap(World lobbyMap) {
+        this.lobbyMap = lobbyMap;
     }
 }

@@ -36,3 +36,8 @@ commands:
     usage: /removePoints <player name> <points>
     permission: dieLigaDerKeks.admin
     permission-message: You do not have permission to remove points
+  setupLobby:
+    description: setup lobby
+    usage: /setupLobby
+    permission: dieLigaDerKeks.admin
+    permission-message: You do not have permission to setup the lobby

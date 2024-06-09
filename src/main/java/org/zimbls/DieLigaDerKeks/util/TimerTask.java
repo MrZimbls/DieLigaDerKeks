@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Score;
 import org.zimbls.DieLigaDerKeks.game.GameScoreboard;
-import org.zimbls.DieLigaDerKeks.stateMachine.GameState;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 
 public class TimerTask extends BukkitRunnable {
