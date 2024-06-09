@@ -5,10 +5,7 @@ import org.zimbls.DieLigaDerKeks.commands.AddPointsCommand;
 import org.zimbls.DieLigaDerKeks.commands.LigaCommandHandler;
 import org.zimbls.DieLigaDerKeks.commands.RemovePointsCommand;
 import org.zimbls.DieLigaDerKeks.commands.ReviveCommand;
-import org.zimbls.DieLigaDerKeks.listener.MenueventListener;
-import org.zimbls.DieLigaDerKeks.listener.MobKillListener;
-import org.zimbls.DieLigaDerKeks.listener.PlayerDeathListener;
-import org.zimbls.DieLigaDerKeks.listener.FirstToSleepInBedListener;
+import org.zimbls.DieLigaDerKeks.listener.*;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 
 public class DieLigaDerKeks extends JavaPlugin {
@@ -20,6 +17,7 @@ public class DieLigaDerKeks extends JavaPlugin {
       getServer().getPluginManager().registerEvents(new MenueventListener(), this);
       getServer().getPluginManager().registerEvents(new PlayerDeathListener(state), this);
       getServer().getPluginManager().registerEvents(new FirstToSleepInBedListener(state), this);
+      getServer().getPluginManager().registerEvents(new PlayerEventListener(state), this);
 
       getCommand("revive").setExecutor(new ReviveCommand(this, state));
       getCommand("addPoints").setExecutor(new AddPointsCommand(this, state));

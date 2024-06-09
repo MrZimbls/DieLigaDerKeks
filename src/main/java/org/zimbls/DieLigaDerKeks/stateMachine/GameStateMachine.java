@@ -21,6 +21,7 @@ public class GameStateMachine {
     private final ArrayList<Event> availableEvents = new ArrayList<>();
     private JavaPlugin plugin;
     BukkitTask readyReminderTask;
+    private EventScoreboard eventScoreboard;
 
     public GameStateMachine() {
         currentState = GameState.STOPPED; // Initial state
@@ -130,8 +131,9 @@ public class GameStateMachine {
         Collections.shuffle(possibleEvents);
         game.setActiveEvent(possibleEvents.get(0));
 
-        EventScoreboard eventScoreboard = new EventScoreboard();
+        this.eventScoreboard = new EventScoreboard();
         game.setEventScoreboard(eventScoreboard);
+
         EventTimer eventTask = new EventTimer(eventScoreboard, this, plugin);
         eventTask.runTaskTimer(plugin, 0L, 20L);
     }
@@ -161,6 +163,12 @@ public class GameStateMachine {
         this.game.logGameProgress(sortedParticipants);
         this.game.logGameWinner(sortedParticipants);
         this.game.deleteGameWorld();
+        game.cancelTimer();
         game = null;
+    }
+
+    public void setEventScoreboard(Participant participant) {
+        EventScoreboard gameScoreboard = this.eventScoreboard;
+        participant.getPlayer().setScoreboard(gameScoreboard.getScoreboard());
     }
 }

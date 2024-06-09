@@ -1,15 +1,19 @@
 package org.zimbls.DieLigaDerKeks.game;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.zimbls.DieLigaDerKeks.util.Mob;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class Participant {
-   private Player player;
+   private UUID playerUUID;
    private Set<Mob> killedMobs = new HashSet<Mob>();
    private boolean isDead = false;
    private Location lastGameLocation;
@@ -17,21 +21,23 @@ public class Participant {
    private GameScoreboard scoreboard;
 
    public Participant(Player player) {
-      this.player = player;
+      this.playerUUID = player.getUniqueId();
       this.scoreboard = new GameScoreboard();
    }
 
+   public UUID getPlayerUUID() {
+      return playerUUID;
+   }
+
    public boolean addIfNewMob(Mob mob) {
-      if (killedMobs.contains(mob)) {
-         return false;
-      }
+      if (killedMobs.contains(mob)) return false;
       killedMobs.add(mob);
       points = points + mob.getPoints();
       return true;
    }
 
    public Player getPlayer() {
-      return player;
+      return Bukkit.getPlayer(playerUUID);
    }
 
    public int getPoints() {
@@ -51,7 +57,7 @@ public class Participant {
       killedMobs.clear();
       points = 0;
       isDead = false;
-      player.setGameMode(GameMode.SURVIVAL);
+      getPlayer().setGameMode(GameMode.SURVIVAL);
       lastGameLocation = null;
    }
 
@@ -68,7 +74,7 @@ public class Participant {
    }
 
    public void setLastGameLocation() {
-      lastGameLocation =  player.getLocation();
+      lastGameLocation =  getPlayer().getLocation();
    }
 
    public void setSpecificLocation(Location location) {
@@ -88,6 +94,20 @@ public class Participant {
    }
 
    public void setScoreboard() {
-      player.setScoreboard(scoreboard.getScoreboard());
+      GameScoreboard gameScoreboard = this.getScoreboard();
+      getPlayer().setScoreboard(gameScoreboard.getScoreboard());
+   }
+
+   public void teleportToGameMap(GameMap gameMap) {
+      Location spawnLocation = gameMap.getGameWorld().getSpawnLocation(); // Get the spawn location of the world
+      if (this.lastGameLocation != null) {
+         spawnLocation = this.lastGameLocation;
+      }
+      getPlayer().teleport(spawnLocation);
+   }
+
+   public void teleportToLobbyMap(World lobbyMap) {
+      Location spawnLocation = lobbyMap.getSpawnLocation(); // Get the spawn location of the world
+      getPlayer().teleport(spawnLocation);
    }
 }
