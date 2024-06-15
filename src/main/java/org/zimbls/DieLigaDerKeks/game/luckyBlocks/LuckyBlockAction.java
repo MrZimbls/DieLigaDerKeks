@@ -8,5 +8,4 @@ public abstract class LuckyBlockAction {
     public abstract void run();
     public abstract ActionRarity getRarity();
     public abstract String getDisplayName();
-
 }

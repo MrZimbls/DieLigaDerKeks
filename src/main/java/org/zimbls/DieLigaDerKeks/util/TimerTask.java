@@ -7,9 +7,9 @@ import org.zimbls.DieLigaDerKeks.game.GameScoreboard;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 
 public class TimerTask extends BukkitRunnable {
-    private int remainingTime = 6 * 60 * 60; // 6 hours in seconds
+    private int remainingTime = 3 * 60 * 60; // 6 hours in seconds
     private boolean isPaused = false;
-    private int thirtyMinutesCountdown = 20; // 30 minutes in seconds (should be 30 * 60)y
+    private int thirtyMinutesCountdown = 30 * 60; // 30 minutes in seconds (should be 30 * 60)y
     private GameStateMachine state;
 
     public TimerTask(GameStateMachine state) {

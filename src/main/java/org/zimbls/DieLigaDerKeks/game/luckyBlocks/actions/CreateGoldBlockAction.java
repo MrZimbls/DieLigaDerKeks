@@ -1,18 +1,19 @@
 package org.zimbls.DieLigaDerKeks.game.luckyBlocks.actions;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.zimbls.DieLigaDerKeks.game.luckyBlocks.ActionRarity;
 import org.zimbls.DieLigaDerKeks.game.luckyBlocks.LuckyBlockAction;
 
 import java.util.Objects;
 
-public class AddPointsAction extends LuckyBlockAction {
+public class CreateGoldBlockAction extends LuckyBlockAction {
     @Override
     public void run() {
-        super.playerLuckyBlockData.getParticipant().addPoints(1);
         Location blockLocation = super.playerLuckyBlockData.getBlockLocation();
-        Objects.requireNonNull(blockLocation.getWorld()).playSound(blockLocation, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+        blockLocation.getBlock().setType(Material.GOLD_BLOCK);
+        Objects.requireNonNull(blockLocation.getWorld()).playSound(blockLocation, Sound.BLOCK_DEEPSLATE_BRICKS_PLACE, 1.0f, 1.0f);
     }
 
     @Override
@@ -22,6 +23,6 @@ public class AddPointsAction extends LuckyBlockAction {
 
     @Override
     public String getDisplayName() {
-        return "Add Points";
+        return "Create Gold Block";
     }
 }

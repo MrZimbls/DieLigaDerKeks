@@ -12,7 +12,7 @@ import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 
 public class EventTimer extends BukkitRunnable {
    // TODO: FIX TIMER (1 * 60 + 10)
-   private int remainingTime = 1 * 20 + 10; // 5 min in seconds
+   private int remainingTime = 5 * 60 + 10; // 5 min in seconds
    private final EventScoreboard eventScoreboard;
    private GameStateMachine state;
    boolean revealVotes = false;

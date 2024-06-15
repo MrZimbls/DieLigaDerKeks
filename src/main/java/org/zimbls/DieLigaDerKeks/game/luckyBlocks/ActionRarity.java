@@ -5,10 +5,10 @@ import org.bukkit.ChatColor;
 import java.util.Random;
 
 public enum ActionRarity {
-    COMMON(49.5, ChatColor.GREEN + "Common"),
-    UNCOMMON(40.0, ChatColor.BLUE + "Uncommon"),
-    RARE(10.0, ChatColor.DARK_PURPLE + "Rare"),
-    LEGENDARY(0.5, ChatColor.GOLD + "Legendary");
+    COMMON(49.5, ChatColor.GREEN + "Common" + ChatColor.RESET),
+    UNCOMMON(40.0, ChatColor.BLUE + "Uncommon" + ChatColor.RESET),
+    RARE(10.0, ChatColor.DARK_PURPLE + "Rare" + ChatColor.RESET),
+    LEGENDARY(0.5, ChatColor.GOLD + "Legendary" + ChatColor.RESET);
 
     private final double chance;
     private final String displayName;

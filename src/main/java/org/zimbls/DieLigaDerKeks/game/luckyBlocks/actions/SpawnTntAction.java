@@ -1,18 +1,19 @@
 package org.zimbls.DieLigaDerKeks.game.luckyBlocks.actions;
 
 import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.TNTPrimed;
 import org.zimbls.DieLigaDerKeks.game.luckyBlocks.ActionRarity;
 import org.zimbls.DieLigaDerKeks.game.luckyBlocks.LuckyBlockAction;
 
 import java.util.Objects;
 
-public class RemovePointsAction extends LuckyBlockAction {
+public class SpawnTntAction extends LuckyBlockAction {
     @Override
     public void run() {
-        super.playerLuckyBlockData.getParticipant().removePoints(1);
-        Location blockLocation = super.playerLuckyBlockData.getBlockLocation();
-        Objects.requireNonNull(blockLocation.getWorld()).playSound(blockLocation, Sound.BLOCK_ANVIL_PLACE, 1.0f, 1.0f);
+        Location location = super.playerLuckyBlockData.getBlockLocation();
+        TNTPrimed tnt = (TNTPrimed) Objects.requireNonNull(location.getWorld()).spawnEntity(location, EntityType.PRIMED_TNT);
+        tnt.setFuseTicks(40);
     }
 
     @Override
@@ -22,6 +23,6 @@ public class RemovePointsAction extends LuckyBlockAction {
 
     @Override
     public String getDisplayName() {
-        return "Remove Points";
+        return "Booom!";
     }
 }
