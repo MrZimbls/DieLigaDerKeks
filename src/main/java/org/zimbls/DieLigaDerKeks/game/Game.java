@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Game {
     private Map<String, Participant> participants = new HashMap<>();
     private Set<Participant> players = new HashSet<>();
+    private Set<Participant> unactivePlayers = new HashSet<>();
     private ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
     private Map<String, Mob> mobMap;
     private Scoreboard scoreboard;
@@ -320,5 +321,34 @@ public class Game {
 
     public World getLobbyMap() {
         return lobbyMap;
+    }
+
+    public void setPlayerUnactive(Player player) {
+        players.forEach(participant -> {
+            if (participant.getPlayerUUID() == player.getUniqueId()) {
+                unactivePlayers.add(participant);
+                players.remove(participant);
+                participants.remove(player.getName());
+            }
+        });
+    }
+
+    public void setPlayerActive(Player player) {
+        unactivePlayers.forEach(participant -> {
+            if (participant.getPlayerUUID() == player.getUniqueId()) {
+                players.add(participant);
+                participants.put(player.getName(), participant);
+                unactivePlayers.remove(participant);
+            }
+        });
+    }
+
+    public Participant getUnactivePlayerByUUID(UUID uuid) {
+        for (Participant participant : unactivePlayers) {
+            if (participant.getPlayerUUID().equals(uuid)) {
+                return participant;
+            }
+        }
+        return null;
     }
 }

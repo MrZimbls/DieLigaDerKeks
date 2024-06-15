@@ -24,10 +24,11 @@ public class PlayerEventListener implements Listener {
         Player player = event.getPlayer();
 
         if (state.getState() != GameState.STOPPED) {
-            Participant participant = state.getGame().getParticipantByUUID(player.getUniqueId());
+            Participant participant = state.getGame().getUnactivePlayerByUUID(player.getUniqueId());
 
             if (participant != null) {
                 player.sendMessage(ChatColor.GOLD + "Welcome back!");
+                state.getGame().setPlayerActive(player);
 
                 if (state.getState() == GameState.RUNNING) {
                     participant.teleportToGameMap(state.getGame().getGameWorld());
@@ -48,6 +49,7 @@ public class PlayerEventListener implements Listener {
         if (state.getState() == GameState.RUNNING) {
             if (state.getGame().getParticipantByName(player.getName()) != null) {
                 state.getGame().getParticipantByName(player.getName()).setLastGameLocation();
+                state.getGame().setPlayerUnactive(player);
                 System.out.println("Player " + player.getName() + " left the game. Last location saved: " + state.getGame().getParticipantByName(player.getName()).getLastGameLocation());
             }
         }
