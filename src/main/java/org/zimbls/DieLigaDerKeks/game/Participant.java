@@ -7,10 +7,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.zimbls.DieLigaDerKeks.util.Mob;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class Participant {
    private UUID playerUUID;
@@ -20,6 +17,7 @@ public class Participant {
    private int points = 0;
    private GameScoreboard scoreboard;
    private Player playerBackupInstance;
+   private ArrayList<String> equippedCustomItems = new ArrayList<>();
 
    public Participant(Player player) {
       this.playerUUID = player.getUniqueId();
@@ -120,4 +118,16 @@ public class Participant {
       Location spawnLocation = lobbyMap.getSpawnLocation(); // Get the spawn location of the world
       getPlayer().teleport(spawnLocation);
    }
+
+   public ArrayList<String> getEquippedCustomItems() {
+      return equippedCustomItems;
+   }
+
+   public void addEquippedCustomItem(String item) {
+      this.equippedCustomItems.add(item);
+   }
+
+    public void removeEquippedCustomItem(String item) {
+        this.equippedCustomItems.remove(item);
+    }
 }

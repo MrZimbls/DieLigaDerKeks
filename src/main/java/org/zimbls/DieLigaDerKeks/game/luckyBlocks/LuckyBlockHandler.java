@@ -24,20 +24,19 @@ public class LuckyBlockHandler {
 
         Bukkit.getLogger().info("Loading lucky block actions");
 
-//        Reflections reflections = new Reflections(new ConfigurationBuilder()
-//            .setUrls(ClasspathHelper.forPackage("org.zimbls.DieLigaDerKeks.game.luckyBlocks.actions"))
-//            .setScanners(Scanners.SubTypes));
-//
-//        Set<Class<? extends LuckyBlockAction>> subTypes = reflections.getSubTypesOf(LuckyBlockAction.class);
-//        for (Class<? extends LuckyBlockAction> subType : subTypes) {
-//            try {
-//                Bukkit.getLogger().info("Found lucky block action: " + subType.getSimpleName());
-//                luckyBlockActions.add(subType.getDeclaredConstructor().newInstance());
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-        luckyBlockActions.add(new LookUpAction());
+        Reflections reflections = new Reflections(new ConfigurationBuilder()
+            .setUrls(ClasspathHelper.forPackage("org.zimbls.DieLigaDerKeks.game.luckyBlocks.actions"))
+            .setScanners(Scanners.SubTypes));
+
+        Set<Class<? extends LuckyBlockAction>> subTypes = reflections.getSubTypesOf(LuckyBlockAction.class);
+        for (Class<? extends LuckyBlockAction> subType : subTypes) {
+            try {
+                Bukkit.getLogger().info("Found lucky block action: " + subType.getSimpleName());
+                luckyBlockActions.add(subType.getDeclaredConstructor().newInstance());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void handleLuckyBlock(PlayerLuckyBlockData playerLuckyBlockData) {

@@ -1,9 +1,6 @@
 package org.zimbls.DieLigaDerKeks.game;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.*;
@@ -23,6 +20,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Game {
+    public static final NamespacedKey CUSTOM_ARMOR_KEY = new NamespacedKey("dldk_items", "custom_armor");
     private Map<String, Participant> participants = new HashMap<>();
     private Set<Participant> players = new HashSet<>();
     private Set<Participant> unactivePlayers = new HashSet<>();

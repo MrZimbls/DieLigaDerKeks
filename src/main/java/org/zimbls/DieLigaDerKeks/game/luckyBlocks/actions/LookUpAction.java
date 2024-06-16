@@ -41,7 +41,7 @@ public class LookUpAction extends LuckyBlockAction {
 
     @Override
     public ActionRarity getRarity() {
-        return ActionRarity.COMMON;
+        return ActionRarity.RARE;
     }
 
     @Override

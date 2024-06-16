@@ -2,6 +2,7 @@ package org.zimbls.DieLigaDerKeks;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.zimbls.DieLigaDerKeks.commands.*;
+import org.zimbls.DieLigaDerKeks.game.luckyBlocks.CustomArmorEffectsHandler;
 import org.zimbls.DieLigaDerKeks.game.luckyBlocks.LuckyBlockHandler;
 import org.zimbls.DieLigaDerKeks.listener.*;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
@@ -12,6 +13,7 @@ public class DieLigaDerKeks extends JavaPlugin {
    public void onEnable() {
       GameStateMachine state = new GameStateMachine();
       LuckyBlockHandler luckyBlockHandler = new LuckyBlockHandler();
+      CustomArmorEffectsHandler customArmorEffectsHandler = new CustomArmorEffectsHandler(state, this);
       LigaCommandHandler ligaCommandHandler = new LigaCommandHandler(this, state);
       SetupProccessHandler setupProccessHandler = new SetupProccessHandler(this, state);
       getServer().getPluginManager().registerEvents(new MobKillListener(state), this);
