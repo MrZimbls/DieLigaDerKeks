@@ -323,24 +323,16 @@ public class Game {
         return lobbyMap;
     }
 
-    public void setPlayerUnactive(Player player) {
-        players.forEach(participant -> {
-            if (participant.getPlayerUUID() == player.getUniqueId()) {
-                unactivePlayers.add(participant);
-                players.remove(participant);
-                participants.remove(player.getName());
-            }
-        });
+    public void setParticipantInactive(Participant participant) {
+        unactivePlayers.add(participant);
+        players.remove(participant);
+        participants.remove(participant.getPlayer().getName());
     }
 
-    public void setPlayerActive(Player player) {
-        unactivePlayers.forEach(participant -> {
-            if (participant.getPlayerUUID() == player.getUniqueId()) {
-                players.add(participant);
-                participants.put(player.getName(), participant);
-                unactivePlayers.remove(participant);
-            }
-        });
+    public void setParticipantActive(Participant participant) {
+        players.add(participant);
+        participants.put(participant.getPlayer().getName(), participant);
+        unactivePlayers.remove(participant);
     }
 
     public Participant getUnactivePlayerByUUID(UUID uuid) {

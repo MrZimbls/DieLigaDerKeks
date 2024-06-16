@@ -19,10 +19,12 @@ public class Participant {
    private Location lastGameLocation;
    private int points = 0;
    private GameScoreboard scoreboard;
+   private Player playerBackupInstance;
 
    public Participant(Player player) {
       this.playerUUID = player.getUniqueId();
       this.scoreboard = new GameScoreboard();
+      this.playerBackupInstance = player;
    }
 
    public UUID getPlayerUUID() {
@@ -37,7 +39,15 @@ public class Participant {
    }
 
    public Player getPlayer() {
-      return Bukkit.getPlayer(playerUUID);
+      if (Bukkit.getPlayer(playerUUID) != null) {
+         return Bukkit.getPlayer(playerUUID);
+      } else {
+         return playerBackupInstance;
+      }
+   }
+
+   public void setPlayer(Player player) {
+      this.playerBackupInstance = player;
    }
 
    public int getPoints() {

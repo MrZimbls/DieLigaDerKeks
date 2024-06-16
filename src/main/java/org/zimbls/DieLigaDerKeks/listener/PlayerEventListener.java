@@ -1,5 +1,6 @@
 package org.zimbls.DieLigaDerKeks.listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,16 +28,19 @@ public class PlayerEventListener implements Listener {
             Participant participant = state.getGame().getUnactivePlayerByUUID(player.getUniqueId());
 
             if (participant != null) {
-                player.sendMessage(ChatColor.GOLD + "Welcome back!");
-                state.getGame().setPlayerActive(player);
+                participant.setPlayer(player);
+                Bukkit.broadcastMessage(ChatColor.GOLD + "Welcome back!");
+                state.getGame().setParticipantActive(participant);
 
                 if (state.getState() == GameState.RUNNING) {
                     participant.teleportToGameMap(state.getGame().getGameWorld());
                     participant.setScoreboard();
                 } else if (state.getState() == GameState.EVENT || state.getState() == GameState.PAUSED) {
-                    state.getGame().getParticipantByName(player.getName()).teleportToLobbyMap(state.getGame().getLobbyMap());
+                    participant.teleportToLobbyMap(state.getGame().getLobbyMap());
                     state.setEventScoreboard(participant);
                 }
+            } else {
+                Bukkit.getLogger().warning("Player " + player.getName() + " tried to join the game but is not in the participant list!");
             }
         }
     }
@@ -45,12 +49,17 @@ public class PlayerEventListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         System.out.println("PlayerQuitEvent triggered!");
         Player player = event.getPlayer();
+        Participant participant = state.getGame().getParticipantByUUID(player.getUniqueId());
 
-        if (state.getState() == GameState.RUNNING) {
-            if (state.getGame().getParticipantByName(player.getName()) != null) {
-                state.getGame().getParticipantByName(player.getName()).setLastGameLocation();
-                state.getGame().setPlayerUnactive(player);
-                System.out.println("Player " + player.getName() + " left the game. Last location saved: " + state.getGame().getParticipantByName(player.getName()).getLastGameLocation());
+        if (participant != null) {
+            if (state.getState() == GameState.RUNNING) {
+                participant.setLastGameLocation();
+                state.getGame().setParticipantInactive(participant);
+                Bukkit.getLogger().info("Player " + player.getName() + " is set to inactive!");
+                Bukkit.getLogger().info("Last game Location " + participant.getLastGameLocation().toString());
+            } else if (state.getState() == GameState.EVENT || state.getState() == GameState.PAUSED) {
+                state.getGame().setParticipantInactive(participant);
+                Bukkit.getLogger().info("Player " + player.getName() + " is set to inactive!");
             }
         }
     }
