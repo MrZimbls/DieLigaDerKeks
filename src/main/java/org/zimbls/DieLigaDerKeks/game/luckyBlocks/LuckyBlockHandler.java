@@ -10,6 +10,7 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.zimbls.DieLigaDerKeks.game.Game;
 import org.zimbls.DieLigaDerKeks.game.luckyBlocks.actions.AddPointsAction;
+import org.zimbls.DieLigaDerKeks.game.luckyBlocks.actions.LookUpAction;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 
 import java.util.*;
@@ -23,19 +24,20 @@ public class LuckyBlockHandler {
 
         Bukkit.getLogger().info("Loading lucky block actions");
 
-        Reflections reflections = new Reflections(new ConfigurationBuilder()
-            .setUrls(ClasspathHelper.forPackage("org.zimbls.DieLigaDerKeks.game.luckyBlocks.actions"))
-            .setScanners(Scanners.SubTypes));
-
-        Set<Class<? extends LuckyBlockAction>> subTypes = reflections.getSubTypesOf(LuckyBlockAction.class);
-        for (Class<? extends LuckyBlockAction> subType : subTypes) {
-            try {
-                Bukkit.getLogger().info("Found lucky block action: " + subType.getSimpleName());
-                luckyBlockActions.add(subType.getDeclaredConstructor().newInstance());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+//        Reflections reflections = new Reflections(new ConfigurationBuilder()
+//            .setUrls(ClasspathHelper.forPackage("org.zimbls.DieLigaDerKeks.game.luckyBlocks.actions"))
+//            .setScanners(Scanners.SubTypes));
+//
+//        Set<Class<? extends LuckyBlockAction>> subTypes = reflections.getSubTypesOf(LuckyBlockAction.class);
+//        for (Class<? extends LuckyBlockAction> subType : subTypes) {
+//            try {
+//                Bukkit.getLogger().info("Found lucky block action: " + subType.getSimpleName());
+//                luckyBlockActions.add(subType.getDeclaredConstructor().newInstance());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+        luckyBlockActions.add(new LookUpAction());
     }
 
     public void handleLuckyBlock(PlayerLuckyBlockData playerLuckyBlockData) {
