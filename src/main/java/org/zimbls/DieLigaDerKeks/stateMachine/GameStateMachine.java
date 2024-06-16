@@ -38,7 +38,7 @@ public class GameStateMachine {
 
     public void startGame(World lobbyMap, JavaPlugin plugin) {
         currentState = GameState.STARTING;
-        if (lobbyMap == null) {
+        if (this.lobbyMap == null) {
             game = new Game(lobbyMap, plugin, this);
             this.lobbyMap = lobbyMap;
         } else {
