@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.*;
 import org.zimbls.DieLigaDerKeks.game.events.Event;
+import org.zimbls.DieLigaDerKeks.game.luckyBlocks.LuckyBlockPopulator;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 import org.zimbls.DieLigaDerKeks.util.ImportMobCsv;
 import org.zimbls.DieLigaDerKeks.util.LanguagePreferencesBasedProperties;
@@ -233,6 +234,8 @@ public class Game {
     public void createGameWorld() {
         this.gameMap = new GameMap();
         this.gameMap.getGameWorld().setPVP(false);
+
+        gameMap.getGameWorld().getPopulators().add(new LuckyBlockPopulator());
     }
 
     public GameMap getGameWorld() {

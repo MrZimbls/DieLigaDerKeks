@@ -8,7 +8,7 @@ import org.zimbls.DieLigaDerKeks.game.luckyBlocks.LuckyBlockAction;
 
 import java.util.Objects;
 
-public class DropStakesAction extends LuckyBlockAction {
+public class DropSteaksAction extends LuckyBlockAction {
     @Override
     public void run() {
         super.playerLuckyBlockData.getWorld().dropItemNaturally(super.playerLuckyBlockData.getBlockLocation(), new org.bukkit.inventory.ItemStack(Material.COOKED_BEEF, 15));
@@ -23,6 +23,6 @@ public class DropStakesAction extends LuckyBlockAction {
 
     @Override
     public String getDisplayName() {
-        return "Drop Stakes";
+        return "Drop Steaks";
     }
 }
