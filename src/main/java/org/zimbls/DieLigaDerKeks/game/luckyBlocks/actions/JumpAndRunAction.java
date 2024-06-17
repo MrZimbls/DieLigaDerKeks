@@ -43,7 +43,7 @@ public class JumpAndRunAction extends LuckyBlockAction {
                     inventoryManager.restoreInventory(player);
                     this.cancel();
                 }
-                else if (jumpCounter == 8 && isJumping) {
+                else if (jumpCounter == 10 && isJumping) {
                     endJumpAndRun(true);
                     currentBlock.getBlock().setType(Material.AIR);
                     nextBlock.getBlock().setType(Material.AIR);
@@ -115,8 +115,8 @@ public class JumpAndRunAction extends LuckyBlockAction {
             case 2 -> currentBlock.clone().add(1, 1, 3);
             case 3 -> currentBlock.clone().add(-1, 1, -3);
             case 4 -> currentBlock.clone().add(-3, 1, -1);
-            case 5 -> currentBlock.clone().add(3, 0, 4);
-            case 6 -> currentBlock.clone().add(-3, 1, -4);
+            case 5 -> currentBlock.clone().add(3, 0, 3);
+            case 6 -> currentBlock.clone().add(-3, 1, -3);
             case 7 -> currentBlock.clone().add(4, 1, 0);
             case 8 -> currentBlock.clone().add(0, 1, 4);
             default ->  currentBlock.clone().add(1, 1, 1);
