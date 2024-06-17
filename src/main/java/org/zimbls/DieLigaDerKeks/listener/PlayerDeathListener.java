@@ -27,16 +27,12 @@ public class PlayerDeathListener implements Listener {
       Player player = event.getEntity();
       Participant participant = state.getGame().getParticipantByName(player.getName());
 
-      // If the player dies, set it's last game location to use it for the revive command
-      participant.setLastGameLocation();
-
-      if (state.getState() != GameState.RUNNING) return;
-
-      participant.setLastGameLocation();
-
       if (participant != null) {
+         if (state.getState() != GameState.RUNNING) return;
+         participant.setLastGameLocation();
          player.setGameMode(GameMode.SPECTATOR); // Set the player's game mode to Spectator
          participant.setDead(true);
+         state.getGame().setParticipantInactive(participant);
          if (player.getKiller() != null) {
             Participant killer = state.getGame().getParticipantByName(player.getKiller().getName());
             if (killer != null) {

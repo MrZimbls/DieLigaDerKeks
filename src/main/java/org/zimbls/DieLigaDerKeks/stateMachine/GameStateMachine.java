@@ -117,25 +117,31 @@ public class GameStateMachine {
         game.pauseTimer();
         game.setEventVotesClosed(false);
 
-        // Triggered when the event is event voting starts
-        game.getParticipants().forEach(participant -> {
-            participant.getPlayer().sendTitle(ChatColor.GREEN + "Vote for the next event!", "To vote, please enter /vote in the chat!", 10, 70, 20);
-            participant.getPlayer().sendMessage("Please enter " + ChatColor.GREEN + "/vote" + ChatColor.RESET + " to vote for the the event!");
-            participant.getPlayer().sendMessage("When the majority of players voted YES for it, the event will happen!");
-        });
+        if (game.getParticipants().size() > 1) {
+            // Triggered when the event is event voting starts
+            game.getParticipants().forEach(participant -> {
+                participant.getPlayer().sendTitle(ChatColor.GREEN + "Vote for the next event!", "To vote, please enter /vote in the chat!", 10, 70, 20);
+                participant.getPlayer().sendMessage("Please enter " + ChatColor.GREEN + "/vote" + ChatColor.RESET + " to vote for the the event!");
+                participant.getPlayer().sendMessage("When the majority of players voted YES for it, the event will happen!");
+            });
 
-        // TODO: Send a reminder message to all online players who haven't entered /vote yet
+            // TODO: Send a reminder message to all online players who haven't entered /vote yet
 
-        ArrayList<Event> possibleEvents = new ArrayList<Event>();
-        for (Event event : availableEvents) {
-            if (event.isPossibleForPlayerCount(game.getNumberOfPlayersAlive())) {
-                possibleEvents.add(event);
+            ArrayList<Event> possibleEvents = new ArrayList<Event>();
+            for (Event event : availableEvents) {
+                if (event.isPossibleForPlayerCount(game.getNumberOfPlayersAlive())) {
+                    possibleEvents.add(event);
+                }
             }
-            possibleEvents.add(event); //TODO remove, this is only for testing
-        }
 
-        Collections.shuffle(possibleEvents);
-        game.setActiveEvent(possibleEvents.get(0));
+            Collections.shuffle(possibleEvents);
+            game.setActiveEvent(possibleEvents.get(0));
+        } else {
+            game.setEventVotesClosed(true);
+            game.getParticipants().forEach(participant -> {
+                participant.getPlayer().sendMessage(ChatColor.GREEN + "The game will continue without an event! Not enough players to start an event!");
+            });
+        }
 
         this.eventScoreboard = new EventScoreboard();
         game.setEventScoreboard(eventScoreboard);
