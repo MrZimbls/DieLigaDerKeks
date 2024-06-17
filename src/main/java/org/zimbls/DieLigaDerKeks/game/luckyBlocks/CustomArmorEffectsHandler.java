@@ -8,7 +8,10 @@ import org.reflections.scanners.Scanners;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.zimbls.DieLigaDerKeks.game.Participant;
+import org.zimbls.DieLigaDerKeks.game.luckyBlocks.customArmor.ExtraHeartBoots;
 import org.zimbls.DieLigaDerKeks.game.luckyBlocks.customArmor.ExtraHeartChestplate;
+import org.zimbls.DieLigaDerKeks.game.luckyBlocks.customArmor.ExtraHeartHelmet;
+import org.zimbls.DieLigaDerKeks.game.luckyBlocks.customArmor.ExtraHeartLeggins;
 import org.zimbls.DieLigaDerKeks.listener.CustomArmorListener;
 import org.zimbls.DieLigaDerKeks.stateMachine.GameStateMachine;
 
@@ -25,6 +28,9 @@ public class CustomArmorEffectsHandler {
         listener = new CustomArmorListener(state, this);
         listener.runTaskTimer(plugin, 0L, 20L);
         registerCustomArmor(new ExtraHeartChestplate());
+        registerCustomArmor(new ExtraHeartHelmet());
+        registerCustomArmor(new ExtraHeartLeggins());
+        registerCustomArmor(new ExtraHeartBoots());
     }
 
     public void onPlayerEquipArmor(Participant player, String identifier) {
