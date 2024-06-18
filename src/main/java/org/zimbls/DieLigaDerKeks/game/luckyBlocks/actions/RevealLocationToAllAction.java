@@ -11,18 +11,16 @@ public class RevealLocationToAllAction extends LuckyBlockAction {
     public void run() {
         Location location = super.playerLuckyBlockData.getBlockLocation();
         String playerName = super.playerLuckyBlockData.getParticipant().getPlayer().getName();
-        String message = new StringBuilder()
-                .append("The player ")
-                .append(ChatColor.GOLD)
-                .append(playerName)
-                .append(ChatColor.RESET)
-                .append(" is currently at ")
-                .append(ChatColor.BLUE)
-                .append("X: ")
-                .append(location.getBlockX())
-                .append(" Z: ")
-                .append(location.getBlockZ())
-                .toString();
+        String message = "The player " +
+            ChatColor.GOLD +
+            playerName +
+            ChatColor.RESET +
+            " is currently at " +
+            ChatColor.BLUE +
+            "X: " +
+            location.getBlockX() +
+            " Z: " +
+            location.getBlockZ();
         Bukkit.broadcastMessage(message);
     }
 

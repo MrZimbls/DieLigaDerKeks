@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Game {
     public static final NamespacedKey CUSTOM_ARMOR_KEY = new NamespacedKey("dldk_items", "custom_armor");
+    public static final NamespacedKey CUSTOM_ITEM_KEY = new NamespacedKey("dldk_items", "custom_item");
     private Map<String, Participant> participants = new HashMap<>();
     private Set<Participant> players = new HashSet<>();
     private Set<Participant> unactivePlayers = new HashSet<>();
